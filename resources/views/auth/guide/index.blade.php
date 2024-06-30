@@ -24,26 +24,40 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
+        
         @error('nom_fichier')
-            <div class="btn btn-danger swalDefaultError">
+            <div class="ml-5 btn btn-danger swalDefaultError">
                 {{ $message }}
             </div>
             <br />
         @enderror
         @error('fichier_scanner')
-            <div class="btn btn-danger swalDefaultError">
+            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
+                {{ $message }}
+            </div>
+            <br /> <br />
+        @enderror
+        @error('empreinte_fichier')
+            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
                 {{ $message }}
             </div>
             <br /> <br />
         @enderror
 
         @if (session('status'))
-        <div class="btn btn-success swalDefaultSuccess">
+        <div class="ml-5 btn mt-3 btn-success swalDefaultSuccess">
             {{ session('status') }}
         </div>
             <br /> <br />
         @endif
 
+        @if (session('warning'))
+        <div class="ml-5 mt-3 btn btn-warning swalDefaultSuccess">
+            {{ session('warning') }}
+        </div>
+            <br /> <br />
+        @endif
+        
         <!-- /.row -->
         <div class="row">
             <div class="col-12">
