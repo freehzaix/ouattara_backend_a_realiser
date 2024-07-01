@@ -14,14 +14,15 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/guides', [GuideController::class, 'index'])->name('guide.index');
     // Route en Post pour Ajouter un Guide dans la base de données
     Route::post('/guides/create', [GuideController::class, 'create'])->name('guide.create');
-    Route::get('/guides/delete/{id}', [GuideController::class, 'delete'])->name('guide.delete');
-    
+    Route::delete('/guides/delete/{id}', [GuideController::class, 'delete'])->name('guide.delete');
+    Route::get('/guides/{id}', [GuideController::class, 'show'])->name('guide.show');
+
     //TypeDocuments
     Route::resource('type-document', TypeDocumentController::class);
     Route::get('/type-documents', [TypeDocumentController::class, 'index'])->name('type-document.index');
     // Route en Post pour Ajouter un type de document dans la base de données
     Route::post('/type-documents/create', [TypeDocumentController::class, 'create'])->name('type-document.create');
-    Route::get('/type-documents/delete/{id}', [TypeDocumentController::class, 'delete'])->name('type-document.delete');
+    Route::delete('/type-documents/delete/{id}', [TypeDocumentController::class, 'delete'])->name('type-document.delete');
     Route::get('/type-documents/{id}', [TypeDocumentController::class, 'show'])->name('type-document.show');
 
     //Faq

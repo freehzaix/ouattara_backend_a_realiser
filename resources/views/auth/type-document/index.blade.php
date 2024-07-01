@@ -50,16 +50,16 @@
         @enderror
 
         @if (session('status'))
-        <div class="ml-5 btn mt-3 btn-success swalDefaultSuccess">
-            {{ session('status') }}
-        </div>
+            <div class="ml-5 btn mt-3 btn-success swalDefaultSuccess">
+                {{ session('status') }}
+            </div>
             <br /> <br />
         @endif
 
         @if (session('warning'))
-        <div class="ml-5 mt-3 btn btn-warning swalDefaultSuccess">
-            {{ session('warning') }}
-        </div>
+            <div class="ml-5 mt-3 btn btn-warning swalDefaultSuccess">
+                {{ session('warning') }}
+            </div>
             <br /> <br />
         @endif
 
@@ -95,17 +95,54 @@
                             </thead>
                             <tbody>
                                 @foreach ($typeDocuments as $item)
-                                <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td><a href="{{ route('type-document.show', $item->id) }}">{{ $item->nom_fichier }}</a></td>
-                                    <td><span class="tag tag-success">{{ $item->empreinte_fichier }}</span></td>
-                                    <td><span class="tag tag-success">{{ $item->created_at }}</span></td>
-                                    <td>
-                                        <a href="{{ route('type-document.show', $item->id) }}" type="button" class="btn btn-info btn-sm">Afficher</a>
-                                        <a href="{{ route('type-document.delete', $item->id) }}" type="button" class="btn btn-danger btn-sm">Supprimer</a>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $item->nom_fichier }}</td>
+                                        <td><span class="tag tag-success">{{ $item->empreinte_fichier }}</span></td>
+                                        <td><span class="tag tag-success">{{ $item->created_at }}</span></td>
+                                        <td>
+                                            <a href="{{ route('type-document.show', $item->id) }}" type="button"
+                                                class="btn btn-info btn-sm" target="_blank">Afficher</a>
+                                            <!-- Bouton pour ouvrir le modal de confirmation -->
+                                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                                data-target="#deleteModal{{ $item->id }}">
+                                                Supprimer
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Modal de confirmation de suppression pour chaque document -->
+                                    <div class="modal fade" id="deleteModal{{ $item->id }}" tabindex="-1"
+                                        role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel">Confirmation de
+                                                        suppression</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Êtes-vous sûr de vouloir supprimer ce document ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Annuler</button>
+                                                    <!-- Utilisation d'un formulaire pour la suppression -->
+                                                    <form action="{{ route('type-document.delete', $item->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
+
                             </tbody>
                         </table>
                     </div>
@@ -118,6 +155,10 @@
 
     </div>
     <!-- /.content-wrapper -->
+
+
+
+
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -170,5 +211,10 @@
     </div>
     <!-- /.modal -->
 
-
+    <script>
+        document.getElementById('confirmDelete').addEventListener('click', function() {
+            // Soumettre le formulaire de suppression après confirmation
+            document.getElementById('deleteForm').submit();
+        });
+    </script>
 @endsection
