@@ -57,24 +57,24 @@ class GuideController extends Controller
     {
         $guide = Guide::find($id);
 
-        if (!$typeDocument) {
-            return redirect()->route('type-document.index')->with('error', 'Document non trouvé.');
+        if (!$guide) {
+            return redirect()->route('guide.index')->with('error', 'Document guide non trouvé.');
         }
 
-        $typeDocument->delete();
+        $guide->delete();
 
         // Après avoir supprimé, faire la redirection avec un message de succès
-        return redirect()->route('type-document.index')->with('status', 'Le document a bien été supprimé.');
+        return redirect()->route('guide.index')->with('status', 'Le document a bien été supprimé.');
     }
 
 
     public function show($id)
     {
-        $document = TypeDocument::find($id);
-        if ($document) {
-            return view('auth.type-document.show', compact('document', 'id'));
+        $guide = Guide::find($id);
+        if ($guide) {
+            return view('auth.guide.show', compact('guide', 'id'));
         } else {
-            return redirect()->route('type-document.index')->withErrors(['documentId' => 'Document non trouvé.']);
+            return redirect()->route('guide.index')->withErrors(['guideId' => 'Document non trouvé.']);
         }
     }
 
