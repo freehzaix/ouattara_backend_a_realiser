@@ -24,7 +24,6 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-        
         @error('nom_fichier')
             <div class="ml-5 btn btn-danger swalDefaultError">
                 {{ $message }}
@@ -43,21 +42,27 @@
             </div>
             <br /> <br />
         @enderror
+        @error('guideId')
+            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
+                {{ $message }}
+            </div>
+            <br /> <br />
+        @enderror
 
         @if (session('status'))
-        <div class="ml-5 btn mt-3 btn-success swalDefaultSuccess">
-            {{ session('status') }}
-        </div>
+            <div class="ml-5 btn mt-3 btn-success swalDefaultSuccess">
+                {{ session('status') }}
+            </div>
             <br /> <br />
         @endif
 
         @if (session('warning'))
-        <div class="ml-5 mt-3 btn btn-warning swalDefaultSuccess">
-            {{ session('warning') }}
-        </div>
+            <div class="ml-5 mt-3 btn btn-warning swalDefaultSuccess">
+                {{ session('warning') }}
+            </div>
             <br /> <br />
         @endif
-        
+
         <!-- /.row -->
         <div class="row">
             <div class="col-12">
@@ -84,21 +89,60 @@
                                     <th>ID</th>
                                     <th>Fichier scanné</th>
                                     <th>Empreinte numérique</th>
+                                    <th>Date d'ajout</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($guides as $item)
-                                <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td><a href="{{ asset($item->fichier_scanner) }}" target="_blank">{{ $item->nom_fichier }}</a></td>
-                                    <td><span class="tag tag-success">{{ $item->empreinte_fichier }}</span></td>
-                                    <td>
-                                        <a href="{{ asset($item->fichier_scanner) }}" target="_blank" type="button" class="btn btn-info btn-sm">Afficher</a>
-                                        <a href="{{ route('guide.delete', $item->id) }}" type="button" class="btn btn-danger btn-sm">Supprimer</a>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $item->nom_fichier }}</td>
+                                        <td><span class="tag tag-success">{{ $item->empreinte_fichier }}</span></td>
+                                        <td><span class="tag tag-success">{{ $item->created_at }}</span></td>
+                                        <td>
+                                            <a href="{{ route('guide.show', $item->id) }}" type="button"
+                                                class="btn btn-info btn-sm" target="_blank">Afficher</a>
+                                            <!-- Bouton pour ouvrir le modal de confirmation -->
+                                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                                data-target="#deleteModal{{ $item->id }}">
+                                                Supprimer
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Modal de confirmation de suppression pour chaque document -->
+                                    <div class="modal fade" id="deleteModal{{ $item->id }}" tabindex="-1"
+                                        role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel">Confirmation de
+                                                        suppression</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Êtes-vous sûr de vouloir supprimer ce document ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Annuler</button>
+                                                    <!-- Utilisation d'un formulaire pour la suppression -->
+                                                    <form action="{{ route('guide.delete', $item->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
+
                             </tbody>
                         </table>
                     </div>
@@ -111,6 +155,10 @@
 
     </div>
     <!-- /.content-wrapper -->
+
+
+
+
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -143,7 +191,7 @@
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" name="fichier_scanner"
                                             id="fichier_scanner">
-                                        <label class="custom-file-label" for="fichier_scanner">Choisir un doculent
+                                        <label class="custom-file-label" for="fichier_scanner">Choisir un document
                                             PDF</label>
                                     </div>
                                 </div>
@@ -163,5 +211,10 @@
     </div>
     <!-- /.modal -->
 
-
+    <script>
+        document.getElementById('confirmDelete').addEventListener('click', function() {
+            // Soumettre le formulaire de suppression après confirmation
+            document.getElementById('deleteForm').submit();
+        });
+    </script>
 @endsection

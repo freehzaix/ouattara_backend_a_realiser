@@ -68,7 +68,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Liste des guides</h3>
+                        <h3 class="card-title">Liste des documents</h3>
 
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 100px;">
@@ -170,7 +170,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Ajouter un guide</h4>
+                    <h4 class="modal-title">Ajouter un document</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
