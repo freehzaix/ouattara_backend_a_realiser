@@ -22,41 +22,67 @@ class TypeDocumentController extends Controller
     public function create(TypeDocumentRequest $request)
     {
         $request->validated();
+        // //Générer l'empreinte numérique avec la fonction MD5
+        // $empreinte = md5($request->hasFile('fichier_scanner'));
+        // //Récupérer une empreinte existant
+        // $existe = TypeDocument::where('empreinte_fichier', $empreinte)->exists();
+        // if ($existe) {
+        //     // L'empreinte du fichier existe déjà dans la base de données -> on affiche un warning.
+        //     return redirect()->route('type-document.index')->with('warning', 'Le document existe déjà dans la base de données.');
+        // } else {
+        //     $ancienFichier = "";
+        //     //On va remplacer le repertoire "storage" par "public" concernant
+        //     //l'ancien fichier du document
+        //     $ancienFichier = str_replace('storage/', 'public/', $ancienFichier);
+        //     if ($ancienFichier && Storage::exists($ancienFichier)) {
+        //         Storage::delete($ancienFichier);
+        //     }
+        //     //Stocké l'image dans la variable $path dans
+        //     //le répertoire /storage/public/upload
+        //     //et créer un lien du repertoire storage vers public
+        //     $path = $request->file('fichier_scanner')->store('public/upload');
+        //     //Rétirer le repertoire public avant de mettre dans la base de données
+        //     $replace_path = str_replace('public', '', $path);
+        //     // L'empreinte du fichier n'existe pas dans la base de données
+        //     $typeDocuments = new TypeDocument();
+        //     $typeDocuments->nom_fichier = $request->nom_fichier;
+        //     //ajouter le repertoire "storage" pour l'insertion de la base de données
+        //     $typeDocuments->fichier_scanner = "storage" . $replace_path;
+        //     $typeDocuments->empreinte_fichier = $empreinte;
+        //     $typeDocuments->save();
+        //     //Après avoir enregistrer, faire la rediretion
+        //     return redirect()->route('type-document.index')->with('status', 'Le document a bien été enregistré.');
+        // }
+        
+        if ($request->hasFile('fichier_scanner')) {
+            // Obtenir le contenu du fichier PDF
+            $contenu = file_get_contents($request->file('fichier_scanner')->path());
+            $base64Data = base64_encode($contenu); // Conversion du fichier
+            $nomFichier = $request->file('fichier_scanner')->getClientOriginalName();
 
-        //Générer l'empreinte numérique avec la fonction MD5
-        $empreinte = md5($request->hasFile('fichier_scanner'));
+            // Générer l'empreinte numérique avec la fonction MD5
+            $empreinte = md5($contenu);
 
-        //Récupérer une empreinte existant
-        $existe = TypeDocument::where('empreinte_fichier', $empreinte)->exists();
-        if ($existe) {
-            // L'empreinte du fichier existe déjà dans la base de données -> on affiche un warning.
-            return redirect()->route('type-document.index')->with('warning', 'Le document existe déjà dans la base de données.');
-        } else {
-            $ancienFichier = "";
-            //On va remplacer le repertoire "storage" par "public" concernant
-            //l'ancien fichier du document
-            $ancienFichier = str_replace('storage/', 'public/', $ancienFichier);
+            // Récupérer une empreinte existante
+            $existe = TypeDocument::where('empreinte_fichier', $empreinte)->exists();
+            if ($existe) {
+                // L'empreinte du fichier existe déjà dans la base de données -> on affiche un warning.
+                return redirect()->route('type-document.index')->with('warning', 'Le document existe déjà dans la base de données.');
+            } else {
+                // L'empreinte du fichier n'existe pas dans la base de données
+                $typeDocument = new TypeDocument();
+                $typeDocument->nom_fichier = $nomFichier;
+                $typeDocument->fichier_scanner = $base64Data; // Sauvegarde du fichier converti ici
+                $typeDocument->empreinte_fichier = $empreinte;
+                $typeDocument->save();
 
-            if ($ancienFichier && Storage::exists($ancienFichier)) {
-                Storage::delete($ancienFichier);
+                // Après avoir enregistré, faire la redirection
+                return redirect()->route('type-document.index')->with('status', 'Le document a bien été enregistré.');
             }
-
-            //Stocké l'image dans la variable $path dans
-            //le répertoire /storage/public/upload
-            //et créer un lien du repertoire storage vers public
-            $path = $request->file('fichier_scanner')->store('public/upload');
-            //Rétirer le repertoire public avant de mettre dans la base de données
-            $replace_path = str_replace('public', '', $path);
-            // L'empreinte du fichier n'existe pas dans la base de données
-            $typeDocuments = new TypeDocument();
-            $typeDocuments->nom_fichier = $request->nom_fichier;
-            //ajouter le repertoire "storage" pour l'insertion de la base de données
-            $typeDocuments->fichier_scanner = "storage" . $replace_path;
-            $typeDocuments->empreinte_fichier = $empreinte;
-            $typeDocuments->save();
-            //Après avoir enregistrer, faire la rediretion
-            return redirect()->route('type-document.index')->with('status', 'Le document a bien été enregistré.');
+        } else {
+            return redirect()->back()->withInput()->withErrors(['fichier_scanner' => 'Veuillez sélectionner un fichier.']);
         }
+
     }
 
     //Delete TypeDocument
@@ -64,17 +90,19 @@ class TypeDocumentController extends Controller
     {
         $typeDocument = TypeDocument::find($id); //Récupéré le document
 
-        $ancienFichier = $typeDocument->fichier_scanner;
-        //On va remplacer le repertoire "storage" par "public" concernant
-        //l'ancien fichier du document
-        $ancienFichier = str_replace('storage/', 'public/', $ancienFichier);
-
-        if ($ancienFichier && Storage::exists($ancienFichier)) {
-            Storage::delete($ancienFichier);
-        }
-
         $typeDocument->delete();
         //Après avoir supprimer, faire la rediretion
         return redirect()->route('type-document.index')->with('status', 'Le document a bien été supprimé.');
     }
+
+    public function show($id)
+    {
+        $document = TypeDocument::find($id);
+        if ($document) {
+            return view('auth.type-document.show', compact('document'));
+        } else {
+            return redirect()->route('type-document.index')->withErrors(['documentId' => 'Document non trouvé.']);
+        }
+    }
+
 }

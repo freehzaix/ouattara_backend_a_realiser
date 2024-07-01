@@ -42,6 +42,12 @@
             </div>
             <br /> <br />
         @enderror
+        @error('documentId')
+            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
+                {{ $message }}
+            </div>
+            <br /> <br />
+        @enderror
 
         @if (session('status'))
         <div class="ml-5 btn mt-3 btn-success swalDefaultSuccess">
@@ -91,11 +97,11 @@
                                 @foreach ($typeDocuments as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td><a href="{{ asset($item->fichier_scanner) }}" target="_blank">{{ $item->nom_fichier }}</a></td>
+                                    <td><a href="{{ route('type-document.show', $item->id) }}">{{ $item->nom_fichier }}</a></td>
                                     <td><span class="tag tag-success">{{ $item->empreinte_fichier }}</span></td>
                                     <td><span class="tag tag-success">{{ $item->created_at }}</span></td>
                                     <td>
-                                        <a href="{{ asset($item->fichier_scanner) }}" target="_blank" type="button" class="btn btn-info btn-sm">Afficher</a>
+                                        <a href="{{ route('type-document.show', $item->id) }}" type="button" class="btn btn-info btn-sm">Afficher</a>
                                         <a href="{{ route('type-document.delete', $item->id) }}" type="button" class="btn btn-danger btn-sm">Supprimer</a>
                                     </td>
                                 </tr>
