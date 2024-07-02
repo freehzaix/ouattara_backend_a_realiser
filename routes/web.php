@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\GuideController;
+use App\Http\Controllers\ModelActeController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\TypeDocumentController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +35,21 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/faqs/show/{id}', [FaqController::class, 'show'])->name('faq.show');
     Route::post('/faqs/edit', [FaqController::class, 'edit'])->name('faq.edit');
     
-    
+    //ModelActes
+    Route::resource('model-acte', ModelActeController::class);
+    Route::get('/model-actes', [ModelActeController::class, 'index'])->name('model-acte.index');
+    // Route en Post pour Ajouter un modèle acte dans la base de données
+    Route::post('/model-actes/create', [ModelActeController::class, 'create'])->name('model-acte.create');
+    Route::delete('/model-actes/delete/{id}', [ModelActeController::class, 'delete'])->name('model-acte.delete');
+    Route::get('/model-actes/{id}', [ModelActeController::class, 'show'])->name('model-acte.show');
+
+    //Evènements
+    Route::resource('evenement', EvenementController::class);
+    Route::get('/evenements', [EvenementController::class, 'index'])->name('evenement.index');
+    // Route en Post/Delete/Get pour Ajouter un evènement dans la base de données
+    Route::post('/evenements/create', [EvenementController::class, 'create'])->name('evenement.create');
+    Route::delete('/evenements/delete/{id}', [EvenementController::class, 'delete'])->name('evenement.delete');
+    Route::get('/evenements/{id}', [EvenementController::class, 'show'])->name('evenement.show');
+    Route::post('/evenements/edit', [EvenementController::class, 'edit'])->name('evenement.edit');
 
 });

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('model_actes', function (Blueprint $table) {
             $table->id();
+            $table->string('nom_fichier');
+            $table->longText('fichier_scanner');
+            $table->string('empreinte_fichier')->unique();
             $table->timestamps();
         });
     }

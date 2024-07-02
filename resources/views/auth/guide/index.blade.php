@@ -99,7 +99,7 @@
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->nom_fichier }}</td>
                                         <td><span class="tag tag-success">{{ $item->empreinte_fichier }}</span></td>
-                                        <td><span class="tag tag-success">{{ $item->created_at }}</span></td>
+                                        <td><span class="tag tag-success">{{ $item->created_at->locale('fr')->diffForHumans() }}</span></td>
                                         <td>
                                             <a href="{{ route('guide.show', $item->id) }}" type="button"
                                                 class="btn btn-info btn-sm" target="_blank">Afficher</a>

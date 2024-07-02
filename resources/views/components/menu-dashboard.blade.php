@@ -67,7 +67,19 @@
               <li class="nav-item">
                 <a href="{{ route('type-document.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Type de documents</p>
+                  <p>Documents type</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('model-acte.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Modèles actes</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('evenement.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Evènements</p>
                 </a>
               </li>
             </ul>

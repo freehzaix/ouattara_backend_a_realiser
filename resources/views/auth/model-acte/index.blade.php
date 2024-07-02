@@ -1,7 +1,7 @@
 @extends('layout.base')
 
 @section('titlePage')
-    Type document
+    Modèle Actes
 @endsection
 
 @section('contenu')
@@ -68,7 +68,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Liste des documents</h3>
+                        <h3 class="card-title">Liste des modèles actes</h3>
 
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 100px;">
@@ -94,7 +94,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($typeDocuments as $item)
+                                @foreach ($modelActes as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->nom_fichier }}</td>
@@ -131,7 +131,7 @@
                                                     <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">Annuler</button>
                                                     <!-- Utilisation d'un formulaire pour la suppression -->
-                                                    <form action="{{ route('type-document.delete', $item->id) }}"
+                                                    <form action="{{ route('model-acte.delete', $item->id) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
@@ -170,12 +170,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Ajouter un document</h4>
+                    <h4 class="modal-title">Ajouter un modèle acte</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="{{ route('type-document.create') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('model-acte.create') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="card-body">

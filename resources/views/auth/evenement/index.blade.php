@@ -1,7 +1,7 @@
 @extends('layout.base')
 
 @section('titlePage')
-    Type document
+    Evènements
 @endsection
 
 @section('contenu')
@@ -68,7 +68,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Liste des documents</h3>
+                        <h3 class="card-title">Liste des evènements</h3>
 
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 100px;">
@@ -87,22 +87,22 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Fichier scanné</th>
-                                    <th>Empreinte numérique</th>
-                                    <th>Date d'ajout</th>
+                                    <th>Nom de l'évènement</th>
+                                    <th>Lieu</th>
+                                    <th>Date de conseil</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($typeDocuments as $item)
+                                @foreach ($evenements as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->nom_fichier }}</td>
-                                        <td><span class="tag tag-success">{{ $item->empreinte_fichier }}</span></td>
+                                        <td>{{ $item->nom }}</td>
+                                        <td><span class="tag tag-success">{{ $item->lieu }}</span></td>
                                         <td><span class="tag tag-success">{{ $item->created_at->locale('fr')->diffForHumans() }}</span></td>
                                         <td>
-                                            <a href="{{ route('type-document.show', $item->id) }}" type="button"
-                                                class="btn btn-info btn-sm" target="_blank">Afficher</a>
+                                            <a href="{{ route('evenement.show', $item->id) }}" type="button"
+                                                class="btn btn-info btn-sm">Modifier</a>
                                             <!-- Bouton pour ouvrir le modal de confirmation -->
                                             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
                                                 data-target="#deleteModal{{ $item->id }}">
@@ -131,7 +131,7 @@
                                                     <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">Annuler</button>
                                                     <!-- Utilisation d'un formulaire pour la suppression -->
-                                                    <form action="{{ route('type-document.delete', $item->id) }}"
+                                                    <form action="{{ route('evenement.delete', $item->id) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
@@ -157,9 +157,6 @@
     <!-- /.content-wrapper -->
 
 
-
-
-
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
         <!-- Control sidebar content goes here -->
@@ -170,31 +167,24 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Ajouter un document</h4>
+                    <h4 class="modal-title">Ajouter un evènement</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="{{ route('type-document.create') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('evenement.create') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="nom_fichier">Nom du fichier</label>
-                                <input type="text" class="form-control" name="nom_fichier" id="nom_fichier"
-                                    placeholder="Donnez un nom au fichier">
+                                <label for="nom">Nom de l'evènement</label>
+                                <input type="text" class="form-control" name="nom" id="nom"
+                                    placeholder="Nom de l'évènement">
                             </div>
-
                             <div class="form-group">
-                                <label for="fichier_scanner">Fichier scanné</label>
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" name="fichier_scanner"
-                                            id="fichier_scanner">
-                                        <label class="custom-file-label" for="fichier_scanner">Choisir un doculent
-                                            PDF</label>
-                                    </div>
-                                </div>
+                                <label for="lieu">Lieu de l'évènement</label>
+                                <input type="text" class="form-control" name="lieu" id="lieu"
+                                    placeholder="Lieu de l'évènement">
                             </div>
                         </div>
                         <!-- /.card-body -->
