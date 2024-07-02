@@ -45,9 +45,9 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
+              <i class="nav-icon fas fa-folder-open"></i>
               <p>
-                Paramètres
+                Documents
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -56,12 +56,6 @@
                 <a href="{{ route('guide.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Guides</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('faq.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>FAQs</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -76,13 +70,49 @@
                   <p>Modèles actes</p>
                 </a>
               </li>
+              
               <li class="nav-item">
-                <a href="{{ route('evenement.index') }}" class="nav-link">
+                <a href="{{ route('compte-rendu.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Evènements</p>
+                  <p>Compte rendus</p>
                 </a>
               </li>
             </ul>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('activite.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-file-word"></i>
+              <p>Activités</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('evenement.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-calendar"></i>
+              <p>Evènements</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('faq.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-question"></i>
+              <p>FAQs</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-paper-plane"></i>
+              <p>
+                Informations
+              </p>
+            </a>
+          </li>
+          <hr>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-sign-out-alt"></i>
+              <p>
+                Déconnexion
+              </p>
+            </a>
           </li>
         </ul>
       </nav>

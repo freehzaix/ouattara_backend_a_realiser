@@ -1,7 +1,7 @@
 @extends('layout.base')
 
 @section('titlePage')
-    Evènements
+    Activités
 @endsection
 
 @section('contenu')
@@ -30,7 +30,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Modifier l'évènement - n°{{ $evenement->id }}</h3>
+                        <h3 class="card-title">Modifier l'activité - n°{{ $activite->id }}</h3>
 
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 100px;">
@@ -40,20 +40,20 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body table-responsive p-0">
-                        <form method="POST" action="{{ route('evenement.edit') }}">
+                        <form method="POST" action="{{ route('activite.edit') }}">
                             @csrf
                             <div class="modal-body">
-                                <input type="text" name="id" value="{{ $evenement->id }}" style="display: none;">
+                                <input type="text" name="id" value="{{ $activite->id }}" style="display: none;">
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="nom">Nom</label>
                                         <input type="text" class="form-control" name="nom" id="nom"
-                                            placeholder="Nom" value="{{ $evenement->nom }}">
+                                            placeholder="Nom" value="{{ $activite->nom }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="lieu">Lieu</label>
                                         <input type="text" class="form-control" name="lieu" id="lieu"
-                                            placeholder="Lieu" value="{{ $evenement->lieu }}">
+                                            placeholder="Lieu" value="{{ $activite->lieu }}">
                                     </div>
                                 </div>
                                 <!-- /.card-body -->

@@ -30,8 +30,8 @@ class ModelActeRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'nom_fichier.required' => 'Vous devez donnez obligatoirement un nom au document.',
-            'fichier_scanner.required' => 'Vous devez donnez obligatoirement charger un document.',
+            'nom_fichier.required' => 'Vous devez donnez obligatoirement un nom au modèle.',
+            'fichier_scanner.required' => 'Vous devez donnez obligatoirement charger un modèle acte.',
         ];
     }
 

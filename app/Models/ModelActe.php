@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class ModelActe extends Model
 {
     use HasFactory;
+    
+    protected $fillable = [
+        'nom_fichier',
+        'fichier_scanner',
+        'empreinte_fichier',
+    ];
+
 }

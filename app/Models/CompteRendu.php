@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ModelActes extends Model
+class CompteRendu extends Model
 {
     use HasFactory;
-
+    
     protected $fillable = [
         'nom_fichier',
         'fichier_scanner',

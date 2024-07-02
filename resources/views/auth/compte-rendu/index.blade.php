@@ -1,7 +1,7 @@
 @extends('layout.base')
 
 @section('titlePage')
-    Evènements
+    Compte Rendus
 @endsection
 
 @section('contenu')
@@ -24,19 +24,25 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-        @error('nom')
+        @error('nom_fichier')
             <div class="ml-5 btn btn-danger swalDefaultError">
                 {{ $message }}
             </div>
             <br />
         @enderror
-        @error('lieu')
+        @error('fichier_scanner')
             <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
                 {{ $message }}
             </div>
             <br /> <br />
         @enderror
         @error('empreinte_fichier')
+            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
+                {{ $message }}
+            </div>
+            <br /> <br />
+        @enderror
+        @error('documentId')
             <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
                 {{ $message }}
             </div>
@@ -62,7 +68,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Liste des evènements</h3>
+                        <h3 class="card-title">Liste des compte rendus</h3>
 
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 100px;">
@@ -81,22 +87,22 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Nom de l'évènement</th>
-                                    <th>Lieu</th>
+                                    <th>Fichier scanné</th>
+                                    <th>Empreinte numérique</th>
                                     <th>Date de conseil</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($evenements as $item)
+                                @foreach ($compteRendus as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->nom }}</td>
-                                        <td><span class="tag tag-success">{{ $item->lieu }}</span></td>
+                                        <td>{{ $item->nom_fichier }}</td>
+                                        <td><span class="tag tag-success">{{ $item->empreinte_fichier }}</span></td>
                                         <td><span class="tag tag-success">{{ $item->created_at->locale('fr')->diffForHumans() }}</span></td>
                                         <td>
-                                            <a href="{{ route('evenement.show', $item->id) }}" type="button"
-                                                class="btn btn-info btn-sm">Modifier</a>
+                                            <a href="{{ route('compte-rendu.show', $item->id) }}" type="button"
+                                                class="btn btn-info btn-sm" target="_blank">Afficher</a>
                                             <!-- Bouton pour ouvrir le modal de confirmation -->
                                             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
                                                 data-target="#deleteModal{{ $item->id }}">
@@ -119,13 +125,13 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Êtes-vous sûr de vouloir supprimer ce document ?
+                                                    Êtes-vous sûr de vouloir supprimer ce compte rendu ?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">Annuler</button>
                                                     <!-- Utilisation d'un formulaire pour la suppression -->
-                                                    <form action="{{ route('evenement.delete', $item->id) }}"
+                                                    <form action="{{ route('compte-rendu.delete', $item->id) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
@@ -151,6 +157,9 @@
     <!-- /.content-wrapper -->
 
 
+
+
+
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
         <!-- Control sidebar content goes here -->
@@ -161,24 +170,31 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Ajouter un evènement</h4>
+                    <h4 class="modal-title">Ajouter un compte rendu</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="{{ route('evenement.create') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('compte-rendu.create') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="nom">Nom de l'evènement</label>
-                                <input type="text" class="form-control" name="nom" id="nom"
-                                    placeholder="Nom de l'évènement">
+                                <label for="nom_fichier">Nom du fichier</label>
+                                <input type="text" class="form-control" name="nom_fichier" id="nom_fichier"
+                                    placeholder="Donnez un nom au fichier">
                             </div>
+
                             <div class="form-group">
-                                <label for="lieu">Lieu de l'évènement</label>
-                                <input type="text" class="form-control" name="lieu" id="lieu"
-                                    placeholder="Lieu de l'évènement">
+                                <label for="fichier_scanner">Fichier scanné</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="fichier_scanner"
+                                            id="fichier_scanner">
+                                        <label class="custom-file-label" for="fichier_scanner">Choisir un doculent
+                                            PDF</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!-- /.card-body -->

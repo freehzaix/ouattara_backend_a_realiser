@@ -25,7 +25,7 @@ class EvenementController extends Controller
         $evenement->lieu = $request->lieu;    
         $evenement->save();
         // Après avoir enregistré, faire la redirection
-        return redirect()->route('evenement.index')->with('status', 'Le document a bien été enregistré.');
+        return redirect()->route('evenement.index')->with('status', '\'évènement a bien été enregistré.');
         
     }
 
@@ -35,7 +35,7 @@ class EvenementController extends Controller
         $evenement = Evenement::find($id);
 
         if (!$evenement) {
-            return redirect()->route('evenement.index')->with('error', 'Document non trouvé.');
+            return redirect()->route('evenement.index')->with('error', 'Evènement non trouvé.');
         }
 
         $evenement->delete();

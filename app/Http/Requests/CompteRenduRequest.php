@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EvenementRequest extends FormRequest
+class CompteRenduRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,17 +22,17 @@ class EvenementRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom' => 'required|string|max:255',
-            'lieu' => 'required|string|max:255',
+            'nom_fichier' => 'required|string|max:255',
+            'fichier_scanner' => 'required|file|mimes:pdf',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'nom.required' => 'Vous devez donnez obligatoirement un nom.',
-            'lieu.required' => 'Vous devez donnez obligatoirement un lieu.',
+            'nom_fichier.required' => 'Vous devez donnez obligatoirement un nom au compte rendu.',
+            'fichier_scanner.required' => 'Vous devez donnez obligatoirement charger un compte rendu.',
         ];
     }
-    
+
 }

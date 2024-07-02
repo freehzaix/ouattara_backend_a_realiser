@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ActiviteController;
+use App\Http\Controllers\CompteRenduController;
 use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\GuideController;
@@ -51,5 +53,22 @@ Route::prefix('dashboard')->group(function () {
     Route::delete('/evenements/delete/{id}', [EvenementController::class, 'delete'])->name('evenement.delete');
     Route::get('/evenements/{id}', [EvenementController::class, 'show'])->name('evenement.show');
     Route::post('/evenements/edit', [EvenementController::class, 'edit'])->name('evenement.edit');
+
+    //Activités
+    Route::resource('activite', ActiviteController::class);
+    Route::get('/activites', [ActiviteController::class, 'index'])->name('activite.index');
+    // Route en Post/Delete/Get pour Ajouter une activité dans la base de données
+    Route::post('/activites/create', [ActiviteController::class, 'create'])->name('activite.create');
+    Route::delete('/activites/delete/{id}', [ActiviteController::class, 'delete'])->name('activite.delete');
+    Route::get('/activites/{id}', [ActiviteController::class, 'show'])->name('activite.show');
+    Route::post('/activites/edit', [ActiviteController::class, 'edit'])->name('activite.edit');
+
+    //CompteRendus
+    Route::resource('compte-rendu', CompteRenduController::class);
+    Route::get('/compte-rendus', [CompteRenduController::class, 'index'])->name('compte-rendu.index');
+    // Route en Post pour Ajouter un compte-rendu dans la base de données
+    Route::post('compte-rendus/create', [CompteRenduController::class, 'create'])->name('compte-rendu.create');
+    Route::delete('/compte-rendus/delete/{id}', [CompteRenduController::class, 'delete'])->name('compte-rendu.delete');
+    Route::get('/compte-rendus/{id}', [CompteRenduController::class, 'show'])->name('compte-rendu.show');
 
 });

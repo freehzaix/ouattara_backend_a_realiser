@@ -101,7 +101,7 @@
                                         <td><span class="tag tag-success">{{ $item->empreinte_fichier }}</span></td>
                                         <td><span class="tag tag-success">{{ $item->created_at->locale('fr')->diffForHumans() }}</span></td>
                                         <td>
-                                            <a href="{{ route('type-document.show', $item->id) }}" type="button"
+                                            <a href="{{ route('model-acte.show', $item->id) }}" type="button"
                                                 class="btn btn-info btn-sm" target="_blank">Afficher</a>
                                             <!-- Bouton pour ouvrir le modal de confirmation -->
                                             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"

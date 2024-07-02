@@ -1,7 +1,7 @@
 @extends('layout.base')
 
 @section('titlePage')
-    {{ $modelActe->nom_fichier }}
+    {{ $compteRendu->nom_fichier }}
 @endsection
 
 @section('contenu')
@@ -28,8 +28,8 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-12">
-                <embed src="data:application/pdf;base64,{{ $modelActe->fichier_scanner }}" type="application/pdf" width="100%" height="600px" />
-                <a class="btn btn-info" href="{{ route('model-acte.index') }}">Retour</a>
+                <embed src="data:application/pdf;base64,{{ $compteRendu->fichier_scanner }}" type="application/pdf" width="100%" height="600px" />
+                <a class="btn btn-info mt-3 ml-5 mr-5" href="{{ route('type-document.index') }}">Retour</a>
             </div>
         </div>
         <!-- /.row -->

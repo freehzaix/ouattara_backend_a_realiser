@@ -1,7 +1,7 @@
 @extends('layout.base')
 
 @section('titlePage')
-    Evènements
+    Activités
 @endsection
 
 @section('contenu')
@@ -36,13 +36,7 @@
             </div>
             <br /> <br />
         @enderror
-        @error('empreinte_fichier')
-            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br /> <br />
-        @enderror
-
+       
         @if (session('status'))
             <div class="ml-5 btn mt-3 btn-success swalDefaultSuccess">
                 {{ session('status') }}
@@ -62,7 +56,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Liste des evènements</h3>
+                        <h3 class="card-title">Liste des activités</h3>
 
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 100px;">
@@ -81,21 +75,21 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Nom de l'évènement</th>
+                                    <th>Nom de l'activité</th>
                                     <th>Lieu</th>
                                     <th>Date de conseil</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($evenements as $item)
+                                @foreach ($activites as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->nom }}</td>
                                         <td><span class="tag tag-success">{{ $item->lieu }}</span></td>
                                         <td><span class="tag tag-success">{{ $item->created_at->locale('fr')->diffForHumans() }}</span></td>
                                         <td>
-                                            <a href="{{ route('evenement.show', $item->id) }}" type="button"
+                                            <a href="{{ route('activite.show', $item->id) }}" type="button"
                                                 class="btn btn-info btn-sm">Modifier</a>
                                             <!-- Bouton pour ouvrir le modal de confirmation -->
                                             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
@@ -105,7 +99,7 @@
                                         </td>
                                     </tr>
 
-                                    <!-- Modal de confirmation de suppression pour chaque document -->
+                                    <!-- Modal de confirmation de suppression pour chaque activité -->
                                     <div class="modal fade" id="deleteModal{{ $item->id }}" tabindex="-1"
                                         role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
@@ -125,7 +119,7 @@
                                                     <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">Annuler</button>
                                                     <!-- Utilisation d'un formulaire pour la suppression -->
-                                                    <form action="{{ route('evenement.delete', $item->id) }}"
+                                                    <form action="{{ route('activite.delete', $item->id) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
@@ -161,22 +155,22 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Ajouter un evènement</h4>
+                    <h4 class="modal-title">Ajouter une activité</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="{{ route('evenement.create') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('activite.create') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="nom">Nom de l'evènement</label>
+                                <label for="nom">Nom de l'activité</label>
                                 <input type="text" class="form-control" name="nom" id="nom"
                                     placeholder="Nom de l'évènement">
                             </div>
                             <div class="form-group">
-                                <label for="lieu">Lieu de l'évènement</label>
+                                <label for="lieu">Lieu de l'activité</label>
                                 <input type="text" class="form-control" name="lieu" id="lieu"
                                     placeholder="Lieu de l'évènement">
                             </div>

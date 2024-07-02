@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('compte_renduses', function (Blueprint $table) {
+        Schema::create('compte_rendus', function (Blueprint $table) {
             $table->id();
+            $table->string('nom_fichier');
+            $table->longText('fichier_scanner');
+            $table->string('empreinte_fichier')->unique();
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('compte_renduses');
+        Schema::dropIfExists('compte_rendus');
     }
 };

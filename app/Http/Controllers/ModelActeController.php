@@ -70,11 +70,11 @@ class ModelActeController extends Controller
 
     public function show($id)
     {
-        $document = ModelActe::find($id);
-        if ($document) {
-            return view('auth.model-acte.show', compact('document', 'id'));
+        $modelActe = ModelActe::find($id);
+        if ($modelActe) {
+            return view('auth.model-acte.show', compact('modelActe', 'id'));
         } else {
-            return redirect()->route('type-document.index')->withErrors(['documentId' => 'Document non trouvé.']);
+            return redirect()->route('model-acte.index')->withErrors(['modelActe' => 'Document non trouvé.']);
         }
     }
 
