@@ -11,5 +11,6 @@ En cours de réalisation...
     - Activites
     - Compte_Rendus
     - Informations
+    - Tampon
 
 ## jeanluc@freehzaix.com
