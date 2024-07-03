@@ -24,32 +24,7 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-        @error('nom')
-            <div class="ml-5 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br />
-        @enderror
-        @error('lieu')
-            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br /> <br />
-        @enderror
-
-        @if (session('status'))
-            <div class="ml-5 btn mt-3 btn-success swalDefaultSuccess">
-                {{ session('status') }}
-            </div>
-            <br /> <br />
-        @endif
-
-        @if (session('warning'))
-            <div class="ml-5 mt-3 btn btn-warning swalDefaultSuccess">
-                {{ session('warning') }}
-            </div>
-            <br /> <br />
-        @endif
+       
 
         <!-- /.row -->
         <div class="row">
@@ -87,7 +62,9 @@
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->nom }}</td>
                                         <td><span class="tag tag-success">{{ $item->lieu }}</span></td>
-                                        <td><span class="tag tag-success">{{ $item->created_at->locale('fr')->diffForHumans() }}</span></td>
+                                        <td><span
+                                                class="tag tag-success">{{ $item->created_at->locale('fr')->diffForHumans() }}</span>
+                                        </td>
                                         <td>
                                             <!-- Bouton pour ouvrir le modal de modification -->
                                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
@@ -108,7 +85,8 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel">Confirmation de suppression</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel">Confirmation de
+                                                        suppression</h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
@@ -118,9 +96,11 @@
                                                     Êtes-vous sûr de vouloir supprimer ce document ?
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Annuler</button>
                                                     <!-- Utilisation d'un formulaire pour la suppression -->
-                                                    <form action="{{ route('activite.delete', $item->id) }}" method="POST">
+                                                    <form action="{{ route('activite.delete', $item->id) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger">Supprimer</button>
@@ -142,25 +122,30 @@
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <form method="POST" action="{{ route('activite.update', $item->id) }}" enctype="multipart/form-data">
+                                                <form method="POST" action="{{ route('activite.update', $item->id) }}"
+                                                    enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="modal-body">
                                                         <div class="card-body">
                                                             <div class="form-group">
                                                                 <label for="nom">Nom de l'activité</label>
-                                                                <input type="text" class="form-control" name="nom" id="nom" value="{{ $item->nom }}">
+                                                                <input type="text" class="form-control" name="nom"
+                                                                    id="nom" value="{{ $item->nom }}">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="lieu">Lieu de l'activité</label>
-                                                                <input type="text" class="form-control" name="lieu" id="lieu" value="{{ $item->lieu }}">
+                                                                <input type="text" class="form-control" name="lieu"
+                                                                    id="lieu" value="{{ $item->lieu }}">
                                                             </div>
                                                         </div>
                                                         <!-- /.card-body -->
                                                     </div>
                                                     <div class="modal-footer justify-content-between">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                                                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                                        <button type="button" class="btn btn-default"
+                                                            data-dismiss="modal">Fermer</button>
+                                                        <button type="submit"
+                                                            class="btn btn-primary">Enregistrer</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -199,11 +184,13 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="nom">Nom de l'activité</label>
-                                <input type="text" class="form-control" name="nom" id="nom" placeholder="Nom de l'activité">
+                                <input type="text" class="form-control" name="nom" id="nom"
+                                    placeholder="Nom de l'activité">
                             </div>
                             <div class="form-group">
                                 <label for="lieu">Lieu de l'activité</label>
-                                <input type="text" class="form-control" name="lieu" id="lieu" placeholder="Lieu de l'activité">
+                                <input type="text" class="form-control" name="lieu" id="lieu"
+                                    placeholder="Lieu de l'activité">
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -219,5 +206,43 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+    <script>
+        $(function() {
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3500
+            });
 
+            $('.swalDefaultSuccess').ready(function() {
+                @if (session('status'))
+                    Toast.fire({
+                        icon: 'success',
+                        title: '{{ session('status') }}'
+                    })
+                @endif
+            });
+
+            $(document).ready(function() {
+                @error('nom')
+                    Toast.fire({
+                        icon: 'error',
+                        title: '{{ $message }}'
+                    });
+                @enderror
+
+                @error('lieu')
+                    setTimeout(function() {
+                        Toast.fire({
+                            icon: 'error',
+                            title: '{{ $message }}'
+                        });
+                    }, 2000); // 2000 millisecondes = 2 secondes de délai
+                @enderror
+            });
+
+
+        });
+    </script>
 @endsection

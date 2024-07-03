@@ -24,45 +24,7 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-        @error('nom_fichier')
-            <div class="ml-5 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br />
-        @enderror
-        @error('fichier_scanner')
-            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br /> <br />
-        @enderror
-        @error('empreinte_fichier')
-            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br /> <br />
-        @enderror
-        @error('guideId')
-            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br /> <br />
-        @enderror
-
-        @if (session('status'))
-            <div class="ml-5 btn mt-3 btn-success swalDefaultSuccess">
-                {{ session('status') }}
-            </div>
-            <br /> <br />
-        @endif
-
-        @if (session('warning'))
-            <div class="ml-5 mt-3 btn btn-warning swalDefaultSuccess">
-                {{ session('warning') }}
-            </div>
-            <br /> <br />
-        @endif
-
+        
         <!-- /.row -->
         <div class="row">
             <div class="col-12">
@@ -97,7 +59,9 @@
                                     <tr>
                                         <td>{{ $item->id }}</td>
                                         <td>{{ str_replace(' ', '_', $item->nom_fichier) }}</td>
-                                        <td><span class="tag tag-success">{{ $item->created_at->locale('fr')->diffForHumans() }}</span></td>
+                                        <td><span
+                                                class="tag tag-success">{{ $item->created_at->locale('fr')->diffForHumans() }}</span>
+                                        </td>
                                         <td>
                                             <a href="{{ route('guide.show', $item->id) }}" type="button"
                                                 class="btn btn-info btn-sm" target="_blank">Afficher</a>
@@ -129,8 +93,7 @@
                                                     <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">Annuler</button>
                                                     <!-- Utilisation d'un formulaire pour la suppression -->
-                                                    <form action="{{ route('guide.delete', $item->id) }}"
-                                                        method="POST">
+                                                    <form action="{{ route('guide.delete', $item->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger">Supprimer</button>
@@ -153,10 +116,6 @@
 
     </div>
     <!-- /.content-wrapper -->
-
-
-
-
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -213,6 +172,59 @@
         document.getElementById('confirmDelete').addEventListener('click', function() {
             // Soumettre le formulaire de suppression après confirmation
             document.getElementById('deleteForm').submit();
+        });
+    </script>
+
+    <script>
+        $(function() {
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3500
+            });
+
+            $('.swalDefaultWarning').ready(function() {
+                @error('warning')
+                    Toast.fire({
+                        icon: 'warning',
+                        title: '{{ session('status') }}'
+                    })
+                    @enderror
+            });
+
+            $('.swalDefaultSuccess').ready(function() {
+                @if (session('status'))
+                    Toast.fire({
+                        icon: 'success',
+                        title: '{{ session('status') }}'
+                    })
+                @endif
+            });
+
+            $(document).ready(function() {
+               
+                @error('fichier_scanner')
+                    setTimeout(function() {
+                        Toast.fire({
+                            icon: 'error',
+                            title: '{{ $message }}'
+                        });
+                    }); 
+                @enderror
+
+                @error('nom_fichier')
+                    setTimeout(function() {
+                        Toast.fire({
+                            icon: 'error',
+                            title: '{{ $message }}'
+                        });
+                    }, 2000); 
+                @enderror
+                
+            });
+
+
         });
     </script>
 @endsection

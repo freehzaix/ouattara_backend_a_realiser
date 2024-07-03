@@ -34,7 +34,7 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/faqs', [FaqController::class, 'index'])->name('faq.index');
     // Route en Post pour Ajouter un Guide dans la base de données
     Route::post('/faqs/create', [FaqController::class, 'create'])->name('faq.create');
-    Route::get('/faqs/delete/{id}', [FaqController::class, 'delete'])->name('faq.delete');
+    Route::delete('/faqs/delete/{id}', [FaqController::class, 'delete'])->name('faq.delete');
     Route::get('/faqs/show/{id}', [FaqController::class, 'show'])->name('faq.show');
     Route::put('/faqs/{id}', [FaqController::class, 'update'])->name('faq.update');
     

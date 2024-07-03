@@ -237,12 +237,7 @@
                     })
                 @endif
             });
-            $('.swalDefaultInfo').click(function() {
-                Toast.fire({
-                    icon: 'info',
-                    title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
-                })
-            });
+
             $('.swalDefaultError').ready(function() {
                 @error('contenu_message')
                     Toast.fire({
@@ -251,6 +246,7 @@
                     })
                 @enderror
             });
+
             $('.swalDefaultWarning').ready(function() {
                 @if (session('warning'))
                     Toast.fire({
