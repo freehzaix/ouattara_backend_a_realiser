@@ -38,7 +38,7 @@ class TypeDocumentController extends Controller
             } else {
                 // L'empreinte du fichier n'existe pas dans la base de données
                 $typeDocument = new TypeDocument();
-                $typeDocument->nom_fichier = $nomFichier;
+                $typeDocument->nom_fichier = strtolower($request->nom_fichier) . '.pdf';
                 $typeDocument->fichier_scanner = $base64Data; // Sauvegarde du fichier converti ici
                 $typeDocument->empreinte_fichier = $empreinte;
                 $typeDocument->save();

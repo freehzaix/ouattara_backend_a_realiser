@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('guides', function (Blueprint $table) {
             $table->id();
             $table->string('nom_fichier');
-            $table->string('fichier_scanner');
+            $table->longText('fichier_scanner');
             $table->string('empreinte_fichier');
             $table->timestamps();
         });

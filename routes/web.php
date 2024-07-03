@@ -5,6 +5,7 @@ use App\Http\Controllers\CompteRenduController;
 use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\GuideController;
+use App\Http\Controllers\InformationController;
 use App\Http\Controllers\ModelActeController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\TypeDocumentController;
@@ -35,7 +36,7 @@ Route::prefix('dashboard')->group(function () {
     Route::post('/faqs/create', [FaqController::class, 'create'])->name('faq.create');
     Route::get('/faqs/delete/{id}', [FaqController::class, 'delete'])->name('faq.delete');
     Route::get('/faqs/show/{id}', [FaqController::class, 'show'])->name('faq.show');
-    Route::post('/faqs/edit', [FaqController::class, 'edit'])->name('faq.edit');
+    Route::put('/faqs/{id}', [FaqController::class, 'update'])->name('faq.update');
     
     //ModelActes
     Route::resource('model-acte', ModelActeController::class);
@@ -52,7 +53,7 @@ Route::prefix('dashboard')->group(function () {
     Route::post('/evenements/create', [EvenementController::class, 'create'])->name('evenement.create');
     Route::delete('/evenements/delete/{id}', [EvenementController::class, 'delete'])->name('evenement.delete');
     Route::get('/evenements/{id}', [EvenementController::class, 'show'])->name('evenement.show');
-    Route::post('/evenements/edit', [EvenementController::class, 'edit'])->name('evenement.edit');
+    Route::put('/evenements/{id}', [EvenementController::class, 'update'])->name('evenement.update');
 
     //Activités
     Route::resource('activite', ActiviteController::class);
@@ -61,7 +62,7 @@ Route::prefix('dashboard')->group(function () {
     Route::post('/activites/create', [ActiviteController::class, 'create'])->name('activite.create');
     Route::delete('/activites/delete/{id}', [ActiviteController::class, 'delete'])->name('activite.delete');
     Route::get('/activites/{id}', [ActiviteController::class, 'show'])->name('activite.show');
-    Route::post('/activites/edit', [ActiviteController::class, 'edit'])->name('activite.edit');
+    Route::put('/activites/{id}', [ActiviteController::class, 'update'])->name('activite.update');
 
     //CompteRendus
     Route::resource('compte-rendu', CompteRenduController::class);
@@ -70,5 +71,13 @@ Route::prefix('dashboard')->group(function () {
     Route::post('compte-rendus/create', [CompteRenduController::class, 'create'])->name('compte-rendu.create');
     Route::delete('/compte-rendus/delete/{id}', [CompteRenduController::class, 'delete'])->name('compte-rendu.delete');
     Route::get('/compte-rendus/{id}', [CompteRenduController::class, 'show'])->name('compte-rendu.show');
+
+    //Informations
+    Route::resource('information', InformationController::class);
+    Route::get('/informations', [InformationController::class, 'index'])->name('information.index');
+    // Route en Post pour Ajouter une information dans la base de données
+    Route::post('/informations/create', [InformationController::class, 'create'])->name('information.create');
+    Route::delete('/informations/delete/{id}', [InformationController::class, 'delete'])->name('information.delete');
+    Route::get('/informations/{id}', [InformationController::class, 'show'])->name('information.show');
 
 });

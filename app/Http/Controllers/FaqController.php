@@ -49,16 +49,16 @@ class FaqController extends Controller
     }
 
     //Modifier un FAQ
-    public function edit(FaqRequest $request)
+    public function update(FaqRequest $request, $id)
     {
         $request->validated();
 
-        $faq = Faq::find($request->id);
+        $faq = Faq::findOrFail($id);
         $faq->question = $request->question;
         $faq->reponse = $request->reponse;
-        $faq->update();
-        //Après avoir supprimer, faire la rediretion
-        return redirect()->route('faq.index')->with('status', 'Le FAQ a bien été modifier.');
-    }
+        $faq->save();
 
+        return redirect()->route('faq.index')->with('status', 'FAQ mise à jour avec succès');
+    }
+    
 }

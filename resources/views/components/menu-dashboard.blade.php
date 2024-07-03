@@ -54,26 +54,26 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{ route('guide.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="nav-icon far fa-folder-open"></i>
                   <p>Guides</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{ route('type-document.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="nav-icon far fa-folder-open"></i>
                   <p>Documents type</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{ route('model-acte.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="nav-icon far fa-folder-open"></i>
                   <p>Modèles actes</p>
                 </a>
               </li>
               
               <li class="nav-item">
                 <a href="{{ route('compte-rendu.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="nav-icon far fa-folder-open"></i>
                   <p>Compte rendus</p>
                 </a>
               </li>
@@ -98,7 +98,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ route('information.index') }}" class="nav-link">
               <i class="nav-icon fas fa-paper-plane"></i>
               <p>
                 Informations

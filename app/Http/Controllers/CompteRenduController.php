@@ -11,9 +11,9 @@ class CompteRenduController extends Controller
 
     public function index()
     {
-        $modelActes = CompteRendu::all();
+        $compteRendus = CompteRendu::all();
 
-        return view('auth.model-acte.index', compact('modelActes'));
+        return view('auth.compte-rendu.index', compact('compteRendus'));
     }
 
     //Fonction Post pour ajouter un compte rendu dans la base de données
@@ -38,7 +38,7 @@ class CompteRenduController extends Controller
             } else {
                 // L'empreinte du fichier n'existe pas dans la base de données
                 $compteRendu = new CompteRendu();
-                $compteRendu->nom_fichier = $nomFichier;
+                $compteRendu->nom_fichier = strtolower($request->nom_fichier) . '.pdf';
                 $compteRendu->fichier_scanner = $base64Data; // Sauvegarde du fichier converti ici
                 $compteRendu->empreinte_fichier = $empreinte;
                 $compteRendu->save();

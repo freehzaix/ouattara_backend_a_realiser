@@ -25,7 +25,7 @@ class EvenementController extends Controller
         $evenement->lieu = $request->lieu;    
         $evenement->save();
         // Après avoir enregistré, faire la redirection
-        return redirect()->route('evenement.index')->with('status', '\'évènement a bien été enregistré.');
+        return redirect()->route('evenement.index')->with('status', 'L\'évènement a bien été enregistré.');
         
     }
 
@@ -55,16 +55,16 @@ class EvenementController extends Controller
      }
  
      //Modifier un évènement
-     public function edit(EvenementRequest $request)
-     {
-         $request->validated();
- 
-         $evenement = Evenement::find($request->id);
-         $evenement->nom = $request->nom;
-         $evenement->lieu = $request->lieu;
-         $evenement->update();
-         //Après avoir modifier, faire la rediretion
-         return redirect()->route('evenement.index')->with('status', 'L\'évènement a bien été modifié.');
-     }
+    public function update(EvenementRequest $request, $id)
+    {
+        $request->validated();
+
+        $evenement = Evenement::findOrFail($id);
+        $evenement->nom = $request->nom;
+        $evenement->lieu = $request->lieu;
+        $evenement->save();
+        
+        return redirect()->route('activite.index')->with('status', 'Evènement mise à jour avec succès');
+    }
 
 }

@@ -38,7 +38,7 @@ class ModelActeController extends Controller
             } else {
                 // L'empreinte du fichier n'existe pas dans la base de données
                 $modelActe = new ModelActe();
-                $modelActe->nom_fichier = $nomFichier;
+                $modelActe->nom_fichier = strtolower($request->nom_fichier) . '.pdf';
                 $modelActe->fichier_scanner = $base64Data; // Sauvegarde du fichier converti ici
                 $modelActe->empreinte_fichier = $empreinte;
                 $modelActe->save();

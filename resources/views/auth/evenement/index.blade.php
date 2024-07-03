@@ -36,12 +36,6 @@
             </div>
             <br /> <br />
         @enderror
-        @error('empreinte_fichier')
-            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br /> <br />
-        @enderror
 
         @if (session('status'))
             <div class="ml-5 btn mt-3 btn-success swalDefaultSuccess">
@@ -62,7 +56,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Liste des evènements</h3>
+                        <h3 class="card-title">Liste des évènements</h3>
 
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 100px;">
@@ -95,8 +89,11 @@
                                         <td><span class="tag tag-success">{{ $item->lieu }}</span></td>
                                         <td><span class="tag tag-success">{{ $item->created_at->locale('fr')->diffForHumans() }}</span></td>
                                         <td>
-                                            <a href="{{ route('evenement.show', $item->id) }}" type="button"
-                                                class="btn btn-info btn-sm">Modifier</a>
+                                            <!-- Bouton pour ouvrir le modal de modification -->
+                                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+                                                data-target="#editModal{{ $item->id }}">
+                                                Modifier
+                                            </button>
                                             <!-- Bouton pour ouvrir le modal de confirmation -->
                                             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
                                                 data-target="#deleteModal{{ $item->id }}">
@@ -105,28 +102,25 @@
                                         </td>
                                     </tr>
 
-                                    <!-- Modal de confirmation de suppression pour chaque document -->
+                                    <!-- Modal de confirmation de suppression pour chaque évènement -->
                                     <div class="modal fade" id="deleteModal{{ $item->id }}" tabindex="-1"
                                         role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel">Confirmation de
-                                                        suppression</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel">Confirmation de suppression</h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Êtes-vous sûr de vouloir supprimer ce document ?
+                                                    Êtes-vous sûr de vouloir supprimer cet évènement ?
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Annuler</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                                                     <!-- Utilisation d'un formulaire pour la suppression -->
-                                                    <form action="{{ route('evenement.delete', $item->id) }}"
-                                                        method="POST">
+                                                    <form action="{{ route('evenement.delete', $item->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger">Supprimer</button>
@@ -135,8 +129,47 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
 
+                                    <!-- Modal de modification pour chaque evenement -->
+                                    <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1" role="dialog"
+                                        aria-labelledby="editModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="editModalLabel">Modifier l'évènement</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <form method="POST" action="{{ route('evenement.update', $item->id) }}">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+                                                            <div class="form-group">
+                                                                <label for="nom">Nom de l'évènement</label>
+                                                                <input type="text" class="form-control" name="nom" id="nom" value="{{ $item->nom }}">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="lieu">Lieu de l'évènement</label>
+                                                                <input type="text" class="form-control" name="lieu" id="lieu" value="{{ $item->lieu }}">
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.card-body -->
+                                                    </div>
+                                                    <div class="modal-footer justify-content-between">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                                                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+                                    <!-- /.modal -->
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -150,41 +183,33 @@
     </div>
     <!-- /.content-wrapper -->
 
-
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
-
+    <!-- Modal d'ajout d'un nouvel évènement -->
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Ajouter un evènement</h4>
+                    <h4 class="modal-title">Ajouter un évènement</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="{{ route('evenement.create') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('evenement.create') }}">
                     @csrf
                     <div class="modal-body">
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="nom">Nom de l'evènement</label>
-                                <input type="text" class="form-control" name="nom" id="nom"
-                                    placeholder="Nom de l'évènement">
+                                <label for="nom">Nom de l'évènement</label>
+                                <input type="text" class="form-control" name="nom" id="nom" placeholder="Nom de l'évènement">
                             </div>
                             <div class="form-group">
                                 <label for="lieu">Lieu de l'évènement</label>
-                                <input type="text" class="form-control" name="lieu" id="lieu"
-                                    placeholder="Lieu de l'évènement">
+                                <input type="text" class="form-control" name="lieu" id="lieu" placeholder="Lieu de l'évènement">
                             </div>
                         </div>
                         <!-- /.card-body -->
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
                     </div>
                 </form>
@@ -195,10 +220,4 @@
     </div>
     <!-- /.modal -->
 
-    <script>
-        document.getElementById('confirmDelete').addEventListener('click', function() {
-            // Soumettre le formulaire de suppression après confirmation
-            document.getElementById('deleteForm').submit();
-        });
-    </script>
 @endsection

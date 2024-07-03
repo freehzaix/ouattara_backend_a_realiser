@@ -88,7 +88,6 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Fichier scanné</th>
-                                    <th>Empreinte numérique</th>
                                     <th>Date d'ajout</th>
                                     <th>Actions</th>
                                 </tr>
@@ -97,8 +96,7 @@
                                 @foreach ($typeDocuments as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->nom_fichier }}</td>
-                                        <td><span class="tag tag-success">{{ $item->empreinte_fichier }}</span></td>
+                                        <td>{{ str_replace(' ', '_', $item->nom_fichier) }}</td>
                                         <td><span class="tag tag-success">{{ $item->created_at->locale('fr')->diffForHumans() }}</span></td>
                                         <td>
                                             <a href="{{ route('type-document.show', $item->id) }}" type="button"

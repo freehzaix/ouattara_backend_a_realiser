@@ -19,14 +19,13 @@ class ActiviteController extends Controller
     public function create(ActiviteRequest $request)
     {
         $request->validated();
-        
+
         $activite = new Activite();
-        $activite->nom = $request->nom;    
-        $activite->lieu = $request->lieu;    
+        $activite->nom = $request->nom;
+        $activite->lieu = $request->lieu;
         $activite->save();
         // Après avoir enregistré, faire la redirection
         return redirect()->route('activite.index')->with('status', 'L\'activité a bien été enregistré.');
-        
     }
 
     //Delete activité
@@ -42,30 +41,28 @@ class ActiviteController extends Controller
 
         // Après avoir supprimé, faire la redirection avec un message de succès
         return redirect()->route('activite.index')->with('status', 'L\'activité a bien été supprimé.');
-
     }
 
 
-     //Affiche une activité
-     public function show($id)
-     {
-         $activite = Activite::find($id); //Récupéré l'activité
- 
-         return view('auth.activite.show', compact('activite'));
-     }
- 
-     //Modifier une activité
-     public function edit(ActiviteRequest $request)
-     {
-         $request->validated();
- 
-         $activite = Activite::find($request->id);
-         $activite->nom = $request->nom;
-         $activite->lieu = $request->lieu;
-         $activite->update();
-         //Après avoir modifier, faire la rediretion
-         return redirect()->route('activite.index')->with('status', 'L\'activité a bien été modifié.');
-         
-     }
+    //Affiche une activité
+    public function show($id)
+    {
+        $activite = Activite::find($id); //Récupéré l'activité
 
+        return view('auth.activite.show', compact('activite'));
+    }
+
+    //Modifier une activité
+    public function update(ActiviteRequest $request, $id)
+    {
+        $request->validated();
+
+        $activite = Activite::findOrFail($id);
+        $activite->nom = $request->nom;
+        $activite->lieu = $request->lieu;
+        $activite->save();
+
+        return redirect()->route('activite.index')->with('status', 'Activité mise à jour avec succès');
+    }
+    
 }

@@ -38,7 +38,7 @@ class GuideController extends Controller
             } else {
                 // L'empreinte du fichier n'existe pas dans la base de données
                 $guide = new Guide();
-                $guide->nom_fichier = $nomFichier;
+                $guide->nom_fichier = strtolower($request->nom_fichier) . '.pdf';
                 $guide->fichier_scanner = $base64Data; // Sauvegarde du fichier converti ici
                 $guide->empreinte_fichier = $empreinte;
                 $guide->save();

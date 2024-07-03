@@ -36,7 +36,7 @@
             </div>
             <br /> <br />
         @enderror
-       
+
         @if (session('status'))
             <div class="ml-5 btn mt-3 btn-success swalDefaultSuccess">
                 {{ session('status') }}
@@ -89,8 +89,11 @@
                                         <td><span class="tag tag-success">{{ $item->lieu }}</span></td>
                                         <td><span class="tag tag-success">{{ $item->created_at->locale('fr')->diffForHumans() }}</span></td>
                                         <td>
-                                            <a href="{{ route('activite.show', $item->id) }}" type="button"
-                                                class="btn btn-info btn-sm">Modifier</a>
+                                            <!-- Bouton pour ouvrir le modal de modification -->
+                                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+                                                data-target="#editModal{{ $item->id }}">
+                                                Modifier
+                                            </button>
                                             <!-- Bouton pour ouvrir le modal de confirmation -->
                                             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
                                                 data-target="#deleteModal{{ $item->id }}">
@@ -105,8 +108,7 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel">Confirmation de
-                                                        suppression</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel">Confirmation de suppression</h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
@@ -116,11 +118,9 @@
                                                     Êtes-vous sûr de vouloir supprimer ce document ?
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Annuler</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                                                     <!-- Utilisation d'un formulaire pour la suppression -->
-                                                    <form action="{{ route('activite.delete', $item->id) }}"
-                                                        method="POST">
+                                                    <form action="{{ route('activite.delete', $item->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger">Supprimer</button>
@@ -129,8 +129,47 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
 
+                                    <!-- Modal de modification pour chaque activité -->
+                                    <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1" role="dialog"
+                                        aria-labelledby="editModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="editModalLabel">Modifier l'activité</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <form method="POST" action="{{ route('activite.update', $item->id) }}" enctype="multipart/form-data">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+                                                            <div class="form-group">
+                                                                <label for="nom">Nom de l'activité</label>
+                                                                <input type="text" class="form-control" name="nom" id="nom" value="{{ $item->nom }}">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="lieu">Lieu de l'activité</label>
+                                                                <input type="text" class="form-control" name="lieu" id="lieu" value="{{ $item->lieu }}">
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.card-body -->
+                                                    </div>
+                                                    <div class="modal-footer justify-content-between">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                                                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+                                    <!-- /.modal -->
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -144,13 +183,7 @@
     </div>
     <!-- /.content-wrapper -->
 
-
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
-
+    <!-- Modal d'ajout d'une nouvelle activité -->
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -166,19 +199,17 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="nom">Nom de l'activité</label>
-                                <input type="text" class="form-control" name="nom" id="nom"
-                                    placeholder="Nom de l'évènement">
+                                <input type="text" class="form-control" name="nom" id="nom" placeholder="Nom de l'activité">
                             </div>
                             <div class="form-group">
                                 <label for="lieu">Lieu de l'activité</label>
-                                <input type="text" class="form-control" name="lieu" id="lieu"
-                                    placeholder="Lieu de l'évènement">
+                                <input type="text" class="form-control" name="lieu" id="lieu" placeholder="Lieu de l'activité">
                             </div>
                         </div>
                         <!-- /.card-body -->
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
                     </div>
                 </form>
@@ -189,10 +220,4 @@
     </div>
     <!-- /.modal -->
 
-    <script>
-        document.getElementById('confirmDelete').addEventListener('click', function() {
-            // Soumettre le formulaire de suppression après confirmation
-            document.getElementById('deleteForm').submit();
-        });
-    </script>
 @endsection
