@@ -64,7 +64,7 @@ class EvenementController extends Controller
         $evenement->lieu = $request->lieu;
         $evenement->save();
         
-        return redirect()->route('activite.index')->with('status', 'Evènement mise à jour avec succès');
+        return redirect()->route('evenement.index')->with('status', 'Evènement mise à jour avec succès');
     }
 
 }
