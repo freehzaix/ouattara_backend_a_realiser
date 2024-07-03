@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nom_fichier');
             $table->longText('fichier_scanner');
-            $table->string('empreinte_fichier');
+            $table->string('empreinte_fichier')->nullable();
             $table->timestamps();
         });
     }

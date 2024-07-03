@@ -146,7 +146,7 @@
                                                         <div class="card-body">
                                                             <div class="form-group">
                                                                 <label for="contenu_message">Contenu message</label>
-                                                                <textarea class="form-control" name="contenu_message" id="contenu_message" rows="5">{{ $item->contenu_message }}</textarea>
+                                                                <textarea class="form-control" name="contenu_message" id="contenu_message">{{ $item->contenu_message }}</textarea>
                                                             </div>
                                                         </div>
                                                         <!-- /.card-body -->
@@ -193,7 +193,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="contenu_message">Contenu message</label>
-                                <textarea class="form-control" name="contenu_message" id="contenu_message" rows="5"></textarea>
+                                <textarea class="form-control" name="contenu_message" id="contenu_message"></textarea>         
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -209,4 +209,25 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+@endsection
+
+@section('scripts')
+    <!-- Inclure les fichiers CSS de Summernote -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+
+    <!-- Inclure les fichiers JavaScript de Summernote -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+
+    <!-- Initialiser Summernote -->
+    <script>
+        $(document).ready(function() {
+            $('#contenu_message').summernote({
+                height: 300, // Hauteur de l'éditeur
+                minHeight: null, // Hauteur minimale de l'éditeur
+                maxHeight: null, // Hauteur maximale de l'éditeur
+                focus: true // Mettre le focus sur l'éditeur à l'initialisation
+            });
+        });
+    </script>
 @endsection

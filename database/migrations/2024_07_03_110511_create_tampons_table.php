@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('type_documents', function (Blueprint $table) {
+        Schema::create('tampons', function (Blueprint $table) {
             $table->id();
-            $table->string('nom_fichier');
-            $table->longText('fichier_scanner');
-            $table->string('empreinte_fichier')->nullable();
+            $table->string('empreinte_fichier')->unique();
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('type_documents');
+        Schema::dropIfExists('tampons');
     }
 };

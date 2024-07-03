@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CompteRenduRequest;
 use App\Models\CompteRendu;
+use App\Models\Tampon;
 
 class CompteRenduController extends Controller
 {
@@ -31,7 +32,7 @@ class CompteRenduController extends Controller
             $empreinte = md5($contenu);
 
             // Récupérer une empreinte existante
-            $existe = CompteRendu::where('empreinte_fichier', $empreinte)->exists();
+            $existe = Tampon::where('empreinte_fichier', $empreinte)->exists();
             if ($existe) {
                 // L'empreinte du fichier existe déjà dans la base de données -> on affiche un warning.
                 return redirect()->route('compte-rendu.index')->with('warning', 'Le compte rendu existe déjà dans la base de données.');
@@ -42,6 +43,11 @@ class CompteRenduController extends Controller
                 $compteRendu->fichier_scanner = $base64Data; // Sauvegarde du fichier converti ici
                 $compteRendu->empreinte_fichier = $empreinte;
                 $compteRendu->save();
+
+                //Enregistrer les empreinte de fichier
+                $tampon = new Tampon();
+                $tampon->empreinte_fichier = $empreinte;
+                $tampon->save();
 
                 // Après avoir enregistré, faire la redirection
                 return redirect()->route('compte-rendu.index')->with('status', 'Le compte rendu a bien été enregistré.');

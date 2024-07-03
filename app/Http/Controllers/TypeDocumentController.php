@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TypeDocumentRequest;
+use App\Models\Tampon;
 use App\Models\TypeDocument;
 
 class TypeDocumentController extends Controller
@@ -31,7 +32,7 @@ class TypeDocumentController extends Controller
             $empreinte = md5($contenu);
 
             // Récupérer une empreinte existante
-            $existe = TypeDocument::where('empreinte_fichier', $empreinte)->exists();
+            $existe = Tampon::where('empreinte_fichier', $empreinte)->exists();
             if ($existe) {
                 // L'empreinte du fichier existe déjà dans la base de données -> on affiche un warning.
                 return redirect()->route('type-document.index')->with('warning', 'Le document existe déjà dans la base de données.');
@@ -42,6 +43,11 @@ class TypeDocumentController extends Controller
                 $typeDocument->fichier_scanner = $base64Data; // Sauvegarde du fichier converti ici
                 $typeDocument->empreinte_fichier = $empreinte;
                 $typeDocument->save();
+
+                //Enregistrer les empreinte de fichier
+                $tampon = new Tampon();
+                $tampon->empreinte_fichier = $empreinte;
+                $tampon->save();
 
                 // Après avoir enregistré, faire la redirection
                 return redirect()->route('type-document.index')->with('status', 'Le document a bien été enregistré.');

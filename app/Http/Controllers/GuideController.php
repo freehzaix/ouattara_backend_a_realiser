@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GuideRequest;
 use App\Models\Guide;
+use App\Models\Tampon;
 
 class GuideController extends Controller
 {
@@ -31,7 +32,7 @@ class GuideController extends Controller
             $empreinte = md5($contenu);
 
             // Récupérer une empreinte existante
-            $existe = Guide::where('empreinte_fichier', $empreinte)->exists();
+            $existe = Tampon::where('empreinte_fichier', $empreinte)->exists();
             if ($existe) {
                 // L'empreinte du fichier existe déjà dans la base de données -> on affiche un warning.
                 return redirect()->route('guide.index')->with('warning', 'Le document existe déjà dans la base de données.');
@@ -42,6 +43,11 @@ class GuideController extends Controller
                 $guide->fichier_scanner = $base64Data; // Sauvegarde du fichier converti ici
                 $guide->empreinte_fichier = $empreinte;
                 $guide->save();
+
+                //Enregistrer les empreinte de fichier
+                $tampon = new Tampon();
+                $tampon->empreinte_fichier = $empreinte;
+                $tampon->save();
 
                 // Après avoir enregistré, faire la redirection
                 return redirect()->route('guide.index')->with('status', 'Le document a bien été enregistré.');
