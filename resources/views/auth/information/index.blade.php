@@ -60,7 +60,7 @@
                                 @foreach ($informations as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->contenu_message }}</td>
+                                        <td>{{ htmlspecialchars($item->contenu_message) }}</td>
                                         <td><span
                                                 class="tag tag-success">{{ $item->created_at->locale('fr')->diffForHumans() }}</span>
                                         </td>

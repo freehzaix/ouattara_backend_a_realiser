@@ -24,45 +24,7 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-        @error('nom_fichier')
-            <div class="ml-5 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br />
-        @enderror
-        @error('fichier_scanner')
-            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br /> <br />
-        @enderror
-        @error('empreinte_fichier')
-            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br /> <br />
-        @enderror
-        @error('documentId')
-            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br /> <br />
-        @enderror
-
-        @if (session('status'))
-            <div class="ml-5 btn mt-3 btn-success swalDefaultSuccess">
-                {{ session('status') }}
-            </div>
-            <br /> <br />
-        @endif
-
-        @if (session('warning'))
-            <div class="ml-5 mt-3 btn btn-warning swalDefaultSuccess">
-                {{ session('warning') }}
-            </div>
-            <br /> <br />
-        @endif
-
+        
         <!-- /.row -->
         <div class="row">
             <div class="col-12">
@@ -154,10 +116,6 @@
     </div>
     <!-- /.content-wrapper -->
 
-
-
-
-
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
         <!-- Control sidebar content goes here -->
@@ -213,6 +171,57 @@
         document.getElementById('confirmDelete').addEventListener('click', function() {
             // Soumettre le formulaire de suppression après confirmation
             document.getElementById('deleteForm').submit();
+        });
+    </script>
+    <script>
+        $(function() {
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3500
+            });
+
+            $('.swalDefaultWarning').ready(function() {
+                @if (session('warning'))
+                    Toast.fire({
+                        icon: 'warning',
+                        title: '{{ session('warning') }}'
+                    })
+                @endif
+            });
+
+            $('.swalDefaultSuccess').ready(function() {
+                @if (session('status'))
+                    Toast.fire({
+                        icon: 'success',
+                        title: '{{ session('status') }}'
+                    })
+                @endif
+            });
+
+            $(document).ready(function() {
+
+                @error('fichier_scanner')
+                    setTimeout(function() {
+                        Toast.fire({
+                            icon: 'error',
+                            title: '{{ $message }}'
+                        });
+                    });
+                @enderror
+
+                @error('nom_fichier')
+                    setTimeout(function() {
+                        Toast.fire({
+                            icon: 'error',
+                            title: '{{ $message }}'
+                        });
+                    }, 2000);
+                @enderror
+
+            });
+
         });
     </script>
 @endsection

@@ -22,8 +22,8 @@ class GuideRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom_fichier' => 'required|string|max:255',
-            'fichier_scanner' => 'required|file|mimes:pdf',
+            'nom_fichier' => 'required',
+            'fichier_scanner' => 'required',
         ];
     }
 

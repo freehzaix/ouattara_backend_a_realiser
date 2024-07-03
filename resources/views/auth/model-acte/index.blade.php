@@ -176,13 +176,23 @@
             // Soumettre le formulaire de suppression après confirmation
             document.getElementById('deleteForm').submit();
         });
-
+    </script>
+    <script>
         $(function() {
             var Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
                 timer: 3500
+            });
+
+            $('.swalDefaultWarning').ready(function() {
+                @if (session('warning'))
+                    Toast.fire({
+                        icon: 'warning',
+                        title: '{{ session('warning') }}'
+                    })
+                @endif
             });
 
             $('.swalDefaultSuccess').ready(function() {
@@ -193,52 +203,30 @@
                     })
                 @endif
             });
-            $('.swalDefaultInfo').click(function() {
-                Toast.fire({
-                    icon: 'info',
-                    title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
-                })
-            });
-            $('.swalDefaultError').ready(function() {
-                @error('documentId')
-                    Toast.fire({
-                        icon: 'error',
-                        title: '{{ $message }}'
-                    })
-                @enderror
-            });
-            $('.swalDefaultError').ready(function() {
-                @error('empreinte_fichier')
-                    Toast.fire({
-                        icon: 'error',
-                        title: '{{ $message }}'
-                    })
-                @enderror
-            });
-            $('.swalDefaultError').ready(function() {
+
+            $(document).ready(function() {
+
                 @error('fichier_scanner')
-                    Toast.fire({
-                        icon: 'error',
-                        title: '{{ $message }}'
-                    })
+                    setTimeout(function() {
+                        Toast.fire({
+                            icon: 'error',
+                            title: '{{ $message }}'
+                        });
+                    });
                 @enderror
-            });
-            $('.swalDefaultError').ready(function() {
+
                 @error('nom_fichier')
-                    Toast.fire({
-                        icon: 'error',
-                        title: '{{ $message }}'
-                    })
+                    setTimeout(function() {
+                        Toast.fire({
+                            icon: 'error',
+                            title: '{{ $message }}'
+                        });
+                    }, 2000);
                 @enderror
+
             });
-            $('.swalDefaultWarning').ready(function() {
-                @if (session('warning'))
-                    Toast.fire({
-                        icon: 'warning',
-                        title: "{{ session('warning') }}"
-                    })
-                @endif
-            });
+
+
         });
     </script>
 @endsection

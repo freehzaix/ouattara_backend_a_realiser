@@ -24,7 +24,7 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-        
+
         <!-- /.row -->
         <div class="row">
             <div class="col-12">
@@ -185,12 +185,12 @@
             });
 
             $('.swalDefaultWarning').ready(function() {
-                @error('warning')
+                @if (session('warning'))
                     Toast.fire({
                         icon: 'warning',
-                        title: '{{ session('status') }}'
+                        title: '{{ session('warning') }}'
                     })
-                    @enderror
+                @endif
             });
 
             $('.swalDefaultSuccess').ready(function() {
@@ -203,14 +203,14 @@
             });
 
             $(document).ready(function() {
-               
+
                 @error('fichier_scanner')
                     setTimeout(function() {
                         Toast.fire({
                             icon: 'error',
                             title: '{{ $message }}'
                         });
-                    }); 
+                    });
                 @enderror
 
                 @error('nom_fichier')
@@ -219,9 +219,9 @@
                             icon: 'error',
                             title: '{{ $message }}'
                         });
-                    }, 2000); 
+                    }, 2000);
                 @enderror
-                
+
             });
 
 
