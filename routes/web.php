@@ -79,5 +79,6 @@ Route::prefix('dashboard')->group(function () {
     Route::post('/informations/create', [InformationController::class, 'create'])->name('information.create');
     Route::delete('/informations/delete/{id}', [InformationController::class, 'delete'])->name('information.delete');
     Route::get('/informations/{id}', [InformationController::class, 'show'])->name('information.show');
+    Route::put('/informations/{id}', [InformationController::class, 'update'])->name('information.update');
 
 });
