@@ -21,6 +21,7 @@
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 
+
     <!-- Inclure les fichiers CSS de Summernote -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
 
@@ -111,6 +112,9 @@
 
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ asset('dist/js/pages/dashboard3.js') }}"></script>
+
+    <!-- Summernote -->
+    <script src="{{ asset('plugins/summernote/summernote.js') }}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

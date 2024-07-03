@@ -24,45 +24,7 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-        @error('nom_fichier')
-            <div class="ml-5 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br />
-        @enderror
-        @error('fichier_scanner')
-            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br /> <br />
-        @enderror
-        @error('empreinte_fichier')
-            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br /> <br />
-        @enderror
-        @error('documentId')
-            <div class="ml-5 mt-3 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br /> <br />
-        @enderror
-
-        @if (session('status'))
-            <div class="ml-5 btn mt-3 btn-success swalDefaultSuccess">
-                {{ session('status') }}
-            </div>
-            <br /> <br />
-        @endif
-
-        @if (session('warning'))
-            <div class="ml-5 mt-3 btn btn-warning swalDefaultSuccess">
-                {{ session('warning') }}
-            </div>
-            <br /> <br />
-        @endif
-
+        
         <!-- /.row -->
         <div class="row">
             <div class="col-12">
@@ -213,6 +175,70 @@
         document.getElementById('confirmDelete').addEventListener('click', function() {
             // Soumettre le formulaire de suppression après confirmation
             document.getElementById('deleteForm').submit();
+        });
+
+        $(function() {
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3500
+            });
+
+            $('.swalDefaultSuccess').ready(function() {
+                @if (session('status'))
+                    Toast.fire({
+                        icon: 'success',
+                        title: '{{ session('status') }}'
+                    })
+                @endif
+            });
+            $('.swalDefaultInfo').click(function() {
+                Toast.fire({
+                    icon: 'info',
+                    title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.swalDefaultError').ready(function() {
+                @error('documentId')
+                    Toast.fire({
+                        icon: 'error',
+                        title: '{{ $message }}'
+                    })
+                @enderror
+            });
+            $('.swalDefaultError').ready(function() {
+                @error('empreinte_fichier')
+                    Toast.fire({
+                        icon: 'error',
+                        title: '{{ $message }}'
+                    })
+                @enderror
+            });
+            $('.swalDefaultError').ready(function() {
+                @error('fichier_scanner')
+                    Toast.fire({
+                        icon: 'error',
+                        title: '{{ $message }}'
+                    })
+                @enderror
+            });
+            $('.swalDefaultError').ready(function() {
+                @error('nom_fichier')
+                    Toast.fire({
+                        icon: 'error',
+                        title: '{{ $message }}'
+                    })
+                @enderror
+            });
+            $('.swalDefaultWarning').ready(function() {
+                @if (session('warning'))
+                    Toast.fire({
+                        icon: 'warning',
+                        title: "{{ session('warning') }}"
+                    })
+                @endif
+            });
         });
     </script>
 @endsection

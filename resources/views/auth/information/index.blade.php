@@ -23,27 +23,9 @@
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
-        <!-- /.content-header -->
-        @error('contenu_message')
-            <div class="ml-5 btn btn-danger swalDefaultError">
-                {{ $message }}
-            </div>
-            <br />
-        @enderror
 
-        @if (session('status'))
-            <div class="ml-5 btn mt-3 btn-success swalDefaultSuccess">
-                {{ session('status') }}
-            </div>
-            <br /> <br />
-        @endif
 
-        @if (session('warning'))
-            <div class="ml-5 mt-3 btn btn-warning swalDefaultSuccess">
-                {{ session('warning') }}
-            </div>
-            <br /> <br />
-        @endif
+        @yield('scripts')
 
         <!-- /.row -->
         <div class="row">
@@ -146,7 +128,7 @@
                                                         <div class="card-body">
                                                             <div class="form-group">
                                                                 <label for="contenu_message">Contenu message</label>
-                                                                <textarea class="form-control" name="contenu_message" id="contenu_message">{{ $item->contenu_message }}</textarea>
+                                                                <textarea class="form-control" name="contenu_message" id="contenu_message2">{{ $item->contenu_message }}</textarea>
                                                             </div>
                                                         </div>
                                                         <!-- /.card-body -->
@@ -159,6 +141,7 @@
                                                 </form>
                                             </div>
                                             <!-- /.modal-content -->
+
                                         </div>
                                         <!-- /.modal-dialog -->
                                     </div>
@@ -193,7 +176,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="contenu_message">Contenu message</label>
-                                <textarea class="form-control" name="contenu_message" id="contenu_message"></textarea>         
+                                <textarea class="form-control" name="contenu_message" id="contenu_message1"></textarea>
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -222,11 +205,59 @@
     <!-- Initialiser Summernote -->
     <script>
         $(document).ready(function() {
-            $('#contenu_message').summernote({
-                height: 300, // Hauteur de l'éditeur
-                minHeight: null, // Hauteur minimale de l'éditeur
-                maxHeight: null, // Hauteur maximale de l'éditeur
-                focus: true // Mettre le focus sur l'éditeur à l'initialisation
+            $('#modal-default').on('shown.bs.modal', function() {
+                $('#contenu_message1').summernote({
+                    height: 250, // Hauteur de l'éditeur
+                    minHeight: null, // Hauteur minimale de l'éditeur
+                    maxHeight: null, // Hauteur maximale de l'éditeur
+                    focus: true // Mettre le focus sur l'éditeur à l'initialisation
+                });
+                $('#contenu_message2').summernote({
+                    height: 250, // Hauteur de l'éditeur
+                    minHeight: null, // Hauteur minimale de l'éditeur
+                    maxHeight: null, // Hauteur maximale de l'éditeur
+                    focus: true // Mettre le focus sur l'éditeur à l'initialisation
+                });
+            });
+        });
+
+        $(function() {
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3500
+            });
+
+            $('.swalDefaultSuccess').ready(function() {
+                @if (session('status'))
+                    Toast.fire({
+                        icon: 'success',
+                        title: '{{ session('status') }}'
+                    })
+                @endif
+            });
+            $('.swalDefaultInfo').click(function() {
+                Toast.fire({
+                    icon: 'info',
+                    title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.swalDefaultError').ready(function() {
+                @error('contenu_message')
+                    Toast.fire({
+                        icon: 'error',
+                        title: '{{ $message }}'
+                    })
+                @enderror
+            });
+            $('.swalDefaultWarning').ready(function() {
+                @if (session('warning'))
+                    Toast.fire({
+                        icon: 'warning',
+                        title: "{{ session('warning') }}"
+                    })
+                @endif
             });
         });
     </script>
