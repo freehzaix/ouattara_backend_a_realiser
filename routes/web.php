@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\CompteRenduController;
+use App\Http\Controllers\ConclusionController;
 use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\GuideController;
@@ -80,5 +81,15 @@ Route::prefix('dashboard')->group(function () {
     Route::delete('/informations/delete/{id}', [InformationController::class, 'delete'])->name('information.delete');
     Route::get('/informations/{id}', [InformationController::class, 'show'])->name('information.show');
     Route::put('/informations/{id}', [InformationController::class, 'update'])->name('information.update');
+
+    //Conclusions
+    Route::resource('conclusion', ConclusionController::class);
+    Route::get('/conclusions', [ConclusionController::class, 'index'])->name('conclusion.index');
+    // Route en Post pour Ajouter une conclusion dans la base de données
+    Route::post('conclusions/create', [ConclusionController::class, 'create'])->name('conclusion.create');
+    Route::delete('/conclusions/delete/{id}', [ConclusionController::class, 'delete'])->name('conclusion.delete');
+    Route::get('/conclusions/{id}', [ConclusionController::class, 'show'])->name('conclusion.show');
+    Route::put('/conclusions/{id}', [ConclusionController::class, 'update'])->name('conclusion.update');
+
 
 });

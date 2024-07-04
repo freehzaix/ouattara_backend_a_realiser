@@ -1,7 +1,7 @@
 @extends('layout.base')
 
 @section('titlePage')
-    Informations
+    Conclusion
 @endsection
 
 @section('contenu')
@@ -23,13 +23,14 @@
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
+        <!-- /.content-header -->
 
         <!-- /.row -->
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Liste des informations</h3>
+                        <h3 class="card-title">Liste des conclusions</h3>
 
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 100px;">
@@ -48,22 +49,28 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Contenu message</th>
-                                    <th>Date</th>
+                                    <th>Fichier scanné</th>
+                                    <th>Pertinence</th>
+                                    <th>Est lu ou pas?</th>
+                                    <th>Date d'ajout</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($informations as $item)
+                                @foreach ($conclusions as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ htmlspecialchars($item->contenu_message) }}</td>
+                                        <td>{{ str_replace(' ', '_', $item->nom_fichier) }}</td>
+                                        <td>{{ $item->pertinence }}</td>
+                                        <td>{{ $item->estLu == 1 ? 'Oui' : 'Non' }}</td>
                                         <td><span
                                                 class="tag tag-success">{{ $item->created_at->locale('fr')->diffForHumans() }}</span>
                                         </td>
                                         <td>
+                                            <a href="{{ route('conclusion.show', $item->id) }}" type="button"
+                                                class="btn btn-info btn-sm" target="_blank">Afficher</a>
                                             <!-- Bouton pour ouvrir le modal de modification -->
-                                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+                                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
                                                 data-target="#editModal{{ $item->id }}">
                                                 Modifier
                                             </button>
@@ -75,7 +82,7 @@
                                         </td>
                                     </tr>
 
-                                    <!-- Modal de confirmation de suppression pour chaque information -->
+                                    <!-- Modal de confirmation de suppression pour chaque document -->
                                     <div class="modal fade" id="deleteModal{{ $item->id }}" tabindex="-1"
                                         role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
@@ -89,13 +96,13 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Êtes-vous sûr de vouloir supprimer cet contenu ?
+                                                    Êtes-vous sûr de vouloir supprimer ce document ?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">Annuler</button>
                                                     <!-- Utilisation d'un formulaire pour la suppression -->
-                                                    <form action="{{ route('information.delete', $item->id) }}"
+                                                    <form action="{{ route('conclusion.delete', $item->id) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
@@ -105,30 +112,38 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Modal de modification pour chaque information -->
+                                    <!-- Modal de modification pour chaque conclusion -->
                                     <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1" role="dialog"
                                         aria-labelledby="editModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="editModalLabel">Modifier le contenu</h5>
+                                                    <h5 class="modal-title" id="editModalLabel">Modifier la conclusion</h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <form method="POST" action="{{ route('information.update', $item->id) }}">
+                                                <form method="POST" action="{{ route('conclusion.update', $item->id) }}">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="modal-body">
                                                         <div class="card-body">
                                                             <div class="form-group">
-                                                                <label for="contenu_message">Contenu message</label>
-                                                                <textarea 
-                                                                class="form-control" 
-                                                                name="contenu_message" 
-                                                                id="contenu_message1">{{ $item->contenu_message }}</textarea>
+                                                                <label for="nom_fichier">Nom du fichier</label>
+                                                                <input type="text" class="form-control" name="nom_fichier" id="nom_fichier"
+                                                                value="{{ $item->nom_fichier }}">
+                                                            </div>
+                                                            
+                                                            <div class="form-group">
+                                                                <label for="pertinence">Pertinence du fichier</label>
+                                                                <input type="text" class="form-control" name="pertinence" id="pertinence"
+                                                                value="{{ $item->pertinence }}">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="estLu">Est lu ou pas ?</label>
+                                                                <input type="checkbox" name="estLu" id="estLu"
+                                                                 {{ $item->estLu == 1 ? 'checked' : '' }}>
                                                             </div>
                                                         </div>
                                                         <!-- /.card-body -->
@@ -136,17 +151,18 @@
                                                     <div class="modal-footer justify-content-between">
                                                         <button type="button" class="btn btn-default"
                                                             data-dismiss="modal">Fermer</button>
-                                                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                                        <button type="submit"
+                                                            class="btn btn-primary">Enregistrer</button>
                                                     </div>
                                                 </form>
                                             </div>
                                             <!-- /.modal-content -->
-
                                         </div>
                                         <!-- /.modal-dialog -->
                                     </div>
                                     <!-- /.modal -->
                                 @endforeach
+
                             </tbody>
                         </table>
                     </div>
@@ -160,32 +176,55 @@
     </div>
     <!-- /.content-wrapper -->
 
-    <!-- Modal d'ajout d'une nouvelle activité -->
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Ajouter un contenu</h4>
+                    <h4 class="modal-title">Ajouter une conclusion</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="{{ route('information.create') }}">
+                <form method="POST" action="{{ route('conclusion.create') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="contenu_message">Contenu message</label>
-                                <textarea 
-                                class="form-control" 
-                                name="contenu_message" 
-                                id="contenu_message2"></textarea>
+                                <label for="nom_fichier">Nom du fichier</label>
+                                <input type="text" class="form-control" name="nom_fichier" id="nom_fichier"
+                                    placeholder="Donnez un nom au fichier">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fichier_scanner">Fichier scanné</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="fichier_scanner"
+                                            id="fichier_scanner">
+                                        <label class="custom-file-label" for="fichier_scanner">Choisir un doculent
+                                            PDF</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="pertinence">Pertinence du fichier</label>
+                                <input type="text" class="form-control" name="pertinence" id="pertinence">
+                            </div>
+                            <div class="form-group">
+                                <label for="estLu">Est lu ou pas ?</label>
+                                <input type="checkbox" name="estLu" id="estLu">
                             </div>
                         </div>
                         <!-- /.card-body -->
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
                     </div>
                 </form>
@@ -195,47 +234,29 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
-    @yield('scripts')
-@endsection
 
-@section('scripts')
-    <!-- Inclure les fichiers CSS de Summernote -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
-
-    <!-- Inclure les fichiers JavaScript de Summernote -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
-
-    <!-- Initialiser Summernote -->
     <script>
-        $(document).ready(function() {
-            $('#modal-default').on('shown.bs.modal', function() {
-                $('#contenu_message1').summernote({
-                    height: 250, // Hauteur de l'éditeur
-                    minHeight: null, // Hauteur minimale de l'éditeur
-                    maxHeight: null, // Hauteur maximale de l'éditeur
-                    focus: true // Mettre le focus sur l'éditeur à l'initialisation
-                });
-            });
+        document.getElementById('confirmDelete').addEventListener('click', function() {
+            // Soumettre le formulaire de suppression après confirmation
+            document.getElementById('deleteForm').submit();
         });
-
-        $(document).ready(function() {
-            $("#modal-default").on('shown.bs.modal', function() {
-                $('#contenu_message2').summernote({
-                    height: 250, // Hauteur de l'éditeur
-                    minHeight: null, // Hauteur minimale de l'éditeur
-                    maxHeight: null, // Hauteur maximale de l'éditeur
-                    focus: true // Mettre le focus sur l'éditeur à l'initialisation
-                });
-            });
-        });
-
+    </script>
+    <script>
         $(function() {
             var Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
                 timer: 3500
+            });
+
+            $('.swalDefaultWarning').ready(function() {
+                @if (session('warning'))
+                    Toast.fire({
+                        icon: 'warning',
+                        title: '{{ session('warning') }}'
+                    })
+                @endif
             });
 
             $('.swalDefaultSuccess').ready(function() {
@@ -247,23 +268,30 @@
                 @endif
             });
 
-            $('.swalDefaultError').ready(function() {
-                @error('contenu_message')
-                    Toast.fire({
-                        icon: 'error',
-                        title: '{{ $message }}'
-                    })
+            $(document).ready(function() {
+
+                @error('fichier_scanner')
+                    setTimeout(function() {
+                        Toast.fire({
+                            icon: 'error',
+                            title: '{{ $message }}'
+                        });
+                    });
                 @enderror
+
+                @error('nom_fichier')
+                    setTimeout(function() {
+                        Toast.fire({
+                            icon: 'error',
+                            title: '{{ $message }}'
+                        });
+                    }, 2000);
+                @enderror
+
             });
 
-            $('.swalDefaultWarning').ready(function() {
-                @if (session('warning'))
-                    Toast.fire({
-                        icon: 'warning',
-                        title: "{{ session('warning') }}"
-                    })
-                @endif
-            });
         });
     </script>
+    <!-- Bootstrap Switch -->
+    <script src="{{ asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
 @endsection

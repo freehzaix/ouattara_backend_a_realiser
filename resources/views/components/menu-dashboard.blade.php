@@ -70,11 +70,16 @@
                   <p>Modèles actes</p>
                 </a>
               </li>
-              
               <li class="nav-item">
                 <a href="{{ route('compte-rendu.index') }}" class="nav-link">
                   <i class="nav-icon far fa-folder-open"></i>
                   <p>Compte rendus</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('conclusion.index') }}" class="nav-link">
+                  <i class="nav-icon far fa-folder-open"></i>
+                  <p>Conclusion</p>
                 </a>
               </li>
             </ul>
