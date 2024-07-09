@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ModelActeRequest;
 use App\Models\ModelActe;
 use App\Models\Tampon;
+use Yajra\DataTables\Facades\DataTables;
 
 class ModelActeController extends Controller
 {
@@ -12,9 +13,67 @@ class ModelActeController extends Controller
 
     public function index()
     {
-        $modelActes = ModelActe::all();
+        return view('auth.model-acte.index');
+    }
 
-        return view('auth.model-acte.index', compact('modelActes'));
+    public function chargerListeDeModelActe()
+    {
+        
+        // Récupérer la liste des documents envoyés et reçus par cet utilisateur
+        $documents = ModelActe::all();
+       
+        return Datatables::of($documents)
+            ->addColumn('numero', function () use (&$index) {
+                $index++;
+                return $index;
+            })
+            ->addColumn('nomFichier', function ($document) {
+                return $document->nom_fichier;
+            })
+            ->addColumn('dateAjout', function ($document) {
+                return $document->created_at->locale('fr')->diffForHumans();
+            })
+            ->editColumn('action', function($document){
+                $action = '
+                    <a class="btn btn-primary btn-sm" href="/dashboard/model-actes/'.$document->id.'" target="_blank">
+                        
+                        <i class="fa-solid fa-pencil fa-fw"></i>Afficher
+                    </a>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                            data-target="#deleteModal'.$document->id.'">Supprimer
+                    </button>
+                    <div class="modal fade" id="deleteModal'.$document->id.'" tabindex="-1"
+                        role="dialog" aria-labelledby="deleteModalLabel'.$document->id.'" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel'.$document->id.'">Confirmation de
+                                        suppression</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Êtes-vous sûr de vouloir supprimer ce audience ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-dismiss="modal">Annuler</button>
+                                    <form action="'.route('model-acte.delete', $document->id).'"
+                                        method="POST">
+                                        '.csrf_field().'
+                                        '.method_field('DELETE').'
+                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ';
+                return $action;
+            })
+            ->make(true);
     }
 
     //Fonction Post pour ajouter un modèle acte dans la base de données
@@ -62,6 +121,12 @@ class ModelActeController extends Controller
     public function delete($id)
     {
         $modelActe = ModelActe::find($id);
+
+        // Récupérer une empreinte existante
+        $tampon = Tampon::where('empreinte_fichier', $modelActe->empreinte_fichier)->first();
+        if($tampon){
+            $tampon->delete();
+        }
 
         if (!$modelActe) {
             return redirect()->route('model-acte.index')->with('error', 'Document non trouvé.');
