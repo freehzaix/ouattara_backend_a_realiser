@@ -75,4 +75,9 @@ En cours de réalisation...
         ->make(true);
     }
 
+### Cache des Routes : Si vous utilisez le cache des routes, essayez de le vider et de le reconstruire avec les commandes suivantes :
+
+    php artisan route:clear
+    php artisan route:cache
+
 ## jeanluc@freehzaix.com
