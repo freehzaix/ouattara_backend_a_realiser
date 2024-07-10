@@ -151,7 +151,7 @@ class ConclusionController extends Controller
             } else {
                 // L'empreinte du fichier n'existe pas dans la base de données
                 $conclusion = new Conclusion();
-                $conclusion->nom_fichier = strtolower($request->nom_fichier) . '.pdf';
+                $conclusion->nom_fichier = strtolower(str_replace(' ', '_', $request->nom_fichier)) . '.pdf';
                 $conclusion->fichier_scanner = $base64Data; // Sauvegarde du fichier converti ici
                 $conclusion->empreinte_fichier = $empreinte;
                 if ($request->estLu == "on") {

@@ -100,7 +100,7 @@ class CompteRenduController extends Controller
             } else {
                 // L'empreinte du fichier n'existe pas dans la base de données
                 $compteRendu = new CompteRendu();
-                $compteRendu->nom_fichier = strtolower($request->nom_fichier) . '.pdf';
+                $compteRendu->nom_fichier = strtolower(str_replace(' ', '_', $request->nom_fichier)) . '.pdf';
                 $compteRendu->fichier_scanner = $base64Data; // Sauvegarde du fichier converti ici
                 $compteRendu->empreinte_fichier = $empreinte;
                 $compteRendu->save();
