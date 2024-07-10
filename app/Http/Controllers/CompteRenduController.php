@@ -31,12 +31,7 @@ class CompteRenduController extends Controller
             ->addColumn('nomFichier', function ($document) {
                 return $document->nom_fichier;
             })
-            ->addColumn('pertinence', function ($document) {
-                return $document->nom_fichier;
-            })
-            ->addColumn('estLuOuPas', function ($document) {
-                return $document->estLu == 1 ? 'Oui' : 'Non';
-            })
+            
             ->addColumn('dateAjout', function ($document) {
                 return $document->created_at->locale('fr')->diffForHumans();
             })
