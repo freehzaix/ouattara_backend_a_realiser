@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TypeDocumentRequest;
+use App\Models\Parametre;
 use App\Models\Tampon;
 use App\Models\TypeDocument;
 use Yajra\DataTables\Facades\DataTables;
@@ -85,32 +86,26 @@ class TypeDocumentController extends Controller
             // Obtenir le contenu du fichier PDF
             $contenu = file_get_contents($request->file('fichier_scanner')->path());
             $base64Data = base64_encode($contenu); // Conversion du fichier
-            $nomFichier = $request->file('fichier_scanner')->getClientOriginalName();
+            $nomFichier = Parametre::genererNomDuFichier($request->nom_fichier);//1
 
             // Générer l'empreinte numérique avec la fonction MD5
-            $empreinte = md5($contenu);
+            $empreinte = Parametre::genererEmpreinte($contenu);//2
 
             // Récupérer une empreinte existante
-            $existe = Tampon::where('empreinte_fichier', $empreinte)->exists();
-            if ($existe) {
-                // L'empreinte du fichier existe déjà dans la base de données -> on affiche un warning.
-                return redirect()->route('type-document.index')->with('warning', 'Le document existe déjà dans la base de données.');
-            } else {
+            $existe = Parametre::verifierSiEmpreinteExiste($empreinte);//3
+            if ($existe === false) {
                 // L'empreinte du fichier n'existe pas dans la base de données
                 $typeDocument = new TypeDocument();
-                $typeDocument->nom_fichier = strtolower(str_replace(' ', '_', $request->nom_fichier)) . '.pdf';
+                $typeDocument->nom_fichier = strtolower($nomFichier);
                 $typeDocument->fichier_scanner = $base64Data; // Sauvegarde du fichier converti ici
                 $typeDocument->empreinte_fichier = $empreinte;
                 $typeDocument->save();
-
                 //Enregistrer les empreinte de fichier
-                $tampon = new Tampon();
-                $tampon->empreinte_fichier = $empreinte;
-                $tampon->save();
-
+                Parametre::sauvegarderTampon($empreinte);//4
                 // Après avoir enregistré, faire la redirection
                 return redirect()->route('type-document.index')->with('status', 'Le document a bien été enregistré.');
-            }
+            } 
+            return redirect()->back()->with('warning', 'Le document existe déjà dans la base de données.');
         } else {
             return redirect()->back()->withInput()->withErrors(['fichier_scanner' => 'Veuillez sélectionner un fichier.']);
         }

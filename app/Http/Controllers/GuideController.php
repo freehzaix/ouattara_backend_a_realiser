@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 // use DataTables;
 use App\Http\Requests\GuideRequest;
 use App\Models\Guide;
+use App\Models\Parametre;
 use App\Models\Tampon;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -81,40 +82,35 @@ class GuideController extends Controller
     public function create(GuideRequest $request)
     {
         $request->validated();
-
+        
         if ($request->hasFile('fichier_scanner')) {
             // Obtenir le contenu du fichier PDF
             $contenu = file_get_contents($request->file('fichier_scanner')->path());
             $base64Data = base64_encode($contenu); // Conversion du fichier
-            $nomFichier = $request->file('fichier_scanner')->getClientOriginalName();
+            $nomFichier = Parametre::genererNomDuFichier($request->nom_fichier);//1
 
             // Générer l'empreinte numérique avec la fonction MD5
-            $empreinte = md5($contenu);
+            $empreinte = Parametre::genererEmpreinte($contenu);//2
 
             // Récupérer une empreinte existante
-            $existe = Tampon::where('empreinte_fichier', $empreinte)->exists();
-            if ($existe) {
-                // L'empreinte du fichier existe déjà dans la base de données -> on affiche un warning.
-                return redirect()->route('guide.index')->with('warning', 'Le document existe déjà dans la base de données.');
-            } else {
+            $existe = Parametre::verifierSiEmpreinteExiste($empreinte);//3
+            if ($existe === false) {
                 // L'empreinte du fichier n'existe pas dans la base de données
                 $guide = new Guide();
-                $guide->nom_fichier = strtolower(str_replace(' ', '_', $request->nom_fichier)) . '.pdf';
+                $guide->nom_fichier = strtolower($nomFichier);
                 $guide->fichier_scanner = $base64Data; // Sauvegarde du fichier converti ici
                 $guide->empreinte_fichier = $empreinte;
                 $guide->save();
-
                 //Enregistrer les empreinte de fichier
-                $tampon = new Tampon();
-                $tampon->empreinte_fichier = $empreinte;
-                $tampon->save();
-
+                Parametre::sauvegarderTampon($empreinte);//4
                 // Après avoir enregistré, faire la redirection
-                return redirect()->route('guide.index')->with('status', 'Le document a bien été enregistré.');
-            }
+                return redirect()->route('guide.index')->with('status', 'Le guide a bien été enregistré.');
+            } 
+            return redirect()->back()->with('warning', 'Le guide existe déjà dans la base de données.');
         } else {
             return redirect()->back()->withInput()->withErrors(['fichier_scanner' => 'Veuillez sélectionner un fichier.']);
         }
+        
     }
 
     //Delete Guide
