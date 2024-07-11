@@ -16,8 +16,8 @@ class UserSeeder extends Seeder
     {
         $user = new User();
         $user->name = "Jean-Luc DOH";
-        $user->email = "30506c0ef4-9ef119+1@inbox.mailtrap.io";
-        $user->password = Hash::make("edyrodal1238");
+        $user->email = "test@mail.com";
+        $user->password = Hash::make("12345");
         $user->save();
     }
 }
