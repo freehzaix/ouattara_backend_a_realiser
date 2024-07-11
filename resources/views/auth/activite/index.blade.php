@@ -96,8 +96,8 @@
                         <!-- /.card-body -->
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-reply"></i> Fermer</button>
+                        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Enregistrer</button>
                     </div>
                 </form>
             </div>
@@ -122,7 +122,7 @@
                     Êtes-vous sûr de vouloir supprimer ce guide ?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-reply"></i>Annuler</button>
                     <button type="button" class="btn btn-danger" id="confirmDelete">Supprimer</button>
                 </div>
             </div>

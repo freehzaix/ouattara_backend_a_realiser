@@ -67,10 +67,10 @@ class FaqController extends Controller
                                                         <!-- /.card-body -->
                                                     </div>
                                                     <div class="modal-footer justify-content-between">
-                                                        <button type="button" class="btn btn-default"
-                                                            data-dismiss="modal">Fermer</button>
+                                                        <button type="button" class="btn btn-danger"
+                                                            data-dismiss="modal"><i class="fas fa-reply"></i> Fermer</button>
                                                         <button type="submit"
-                                                            class="btn btn-primary">Enregistrer</button>
+                                                            class="btn btn-success"><i class="fas fa-save"></i> Enregistrer</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -97,13 +97,13 @@ class FaqController extends Controller
                                     Êtes-vous sûr de vouloir supprimer cet élément ?
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-dismiss="modal">Annuler</button>
+                                    <button type="button" class="btn btn-info"
+                                        data-dismiss="modal"><i class="fas fa-reply"></i> Annuler</button>
                                     <form action="' . route('faq.delete', $document->id) . '"
                                         method="POST">
                                         ' . csrf_field() . '
                                         ' . method_field('DELETE') . '
-                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                        <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Supprimer</button>
                                     </form>
                                 </div>
                             </div>

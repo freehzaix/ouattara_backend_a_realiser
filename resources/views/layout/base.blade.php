@@ -41,6 +41,7 @@
     <!-- CSS de Summernote -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.css">
 
+
 </head>
 <!--
 `body` tag options:
