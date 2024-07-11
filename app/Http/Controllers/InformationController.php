@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\InformationRequest;
+use App\Mail\UserEmailInformation;
 use App\Models\Information;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class InformationController extends Controller
@@ -51,8 +55,8 @@ class InformationController extends Controller
                                                     <div class="modal-body">
                                                         <div class="card-body">
                                                             <div class="form-group">
-                                                                <label for="contenu_message">Contenu message</label>
-                                                                <textarea class="form-control" name="contenu_message" id="contenu_message">' . $document->contenu_message . '</textarea>
+                                                                <label for="contenu_message1">Contenu message</label>
+                                                                <textarea class="summernote" name="contenu_message" id="contenu_message1">' . $document->contenu_message . '</textarea>
                                                             </div>
                                                         </div>
                                                         <!-- /.card-body -->
@@ -64,6 +68,13 @@ class InformationController extends Controller
                                                             class="btn btn-primary">Enregistrer</button>
                                                     </div>
                                                 </form>
+                                                <script>
+                                                    $(document).ready(function() {
+                                                        $(".summernote").summernote({
+                                                            height: 150
+                                                        });
+                                                    });
+                                                </script>
                                             </div>
                                             <!-- /.modal-content -->
                                         </div>
@@ -100,6 +111,7 @@ class InformationController extends Controller
                             </div>
                         </div>
                     </div>
+                    <a class="btn btn-info btn-sm" href="/dashboard/informations/sendmail/' . $document->id . '">Envoyez mail</a>
                 ';
                 return $action;
             })
@@ -149,4 +161,21 @@ class InformationController extends Controller
         return redirect()->route('information.index')->with('status', 'Information mise à jour avec succès');
     }
     
+    //Information Send Email
+    public function sendEmailInformation($id)
+    {
+        $users = User::all();
+        $information = Information::find($id);
+
+        // dd($information);
+
+        foreach ($users as $user) {
+
+            Mail::to($user->email)->send(new UserEmailInformation($information));
+
+        }
+
+        return redirect()->route('information.index')->with('status', 'Mail envoyé avec success.');
+    }
+
 }

@@ -2,6 +2,14 @@
 
 En cours de réalisation...
 
+### Exécution du projet
+Pour les migrations de table
+    php artisan migrate
+Démarrer le serveur localhost:8000:
+    php artisan serve
+Démarrer vite:
+    npm run dev
+
 ### Déjà fait:
     - Guides
     - Faqs
@@ -10,7 +18,7 @@ En cours de réalisation...
     - Evenements
     - Activites
     - Compte_Rendus
-    - Informations
+    - Informations (Envoi de mail à tous les utilisateurs)
     - Tampon
     - Conclusion
 

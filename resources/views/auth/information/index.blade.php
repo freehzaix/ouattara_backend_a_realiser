@@ -82,8 +82,8 @@
                     <div class="modal-body">
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="contenu_message">Contenu message</label>
-                                <textarea class="form-control" name="contenu_message" id="contenu_message2"></textarea>
+                                <label>Contenu message</label>
+                                <textarea class="summernote" name="contenu_message" rows="5"></textarea>
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -122,6 +122,7 @@
         </div>
     </div>
 
+    @yield('scripts')
 
     <!-- DataTables -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -133,10 +134,8 @@
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 
-    @yield('scripts')
 
     <!-- jQuery et Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
@@ -175,41 +174,14 @@
 
         });
     </script>
-
 @endsection
 
 @section('scripts')
-    <!-- Inclure les fichiers CSS de Summernote -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
-
-    <!-- Inclure les fichiers JavaScript de Summernote -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
-
-    <!-- Initialiser Summernote -->
+    <!-- SweetAlert2 -->
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <!-- Toastr -->
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
     <script>
-        $(document).ready(function() {
-            $('#modal-default').on('shown.bs.modal', function() {
-                $('#contenu_message1').summernote({
-                    height: 250, // Hauteur de l'éditeur
-                    minHeight: null, // Hauteur minimale de l'éditeur
-                    maxHeight: null, // Hauteur maximale de l'éditeur
-                    focus: true // Mettre le focus sur l'éditeur à l'initialisation
-                });
-            });
-        });
-
-        $(document).ready(function() {
-            $("#modal-default").on('shown.bs.modal', function() {
-                $('#contenu_message2').summernote({
-                    height: 250, // Hauteur de l'éditeur
-                    minHeight: null, // Hauteur minimale de l'éditeur
-                    maxHeight: null, // Hauteur maximale de l'éditeur
-                    focus: true // Mettre le focus sur l'éditeur à l'initialisation
-                });
-            });
-        });
-
         $(function() {
             var Toast = Swal.mixin({
                 toast: true,

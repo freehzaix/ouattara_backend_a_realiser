@@ -140,69 +140,20 @@
         </div>
     </div>
 
+    @yield('scripts')
 
     <!-- DataTables -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-  <link  href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
-  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-
-
-    <script>
-        $(function() {
-            var Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3500
-            });
-
-            $('.swalDefaultWarning').ready(function() {
-                @if (session('warning'))
-                    Toast.fire({
-                        icon: 'warning',
-                        title: '{{ session('warning') }}'
-                    })
-                @endif
-            });
-
-            $('.swalDefaultSuccess').ready(function() {
-                @if (session('status'))
-                    Toast.fire({
-                        icon: 'success',
-                        title: '{{ session('status') }}'
-                    })
-                @endif
-            });
-
-            $(document).ready(function() {
-
-                @error('fichier_scanner')
-                    setTimeout(function() {
-                        Toast.fire({
-                            icon: 'error',
-                            title: '{{ $message }}'
-                        });
-                    });
-                @enderror
-
-                @error('nom_fichier')
-                    setTimeout(function() {
-                        Toast.fire({
-                            icon: 'error',
-                            title: '{{ $message }}'
-                        });
-                    }, 2000);
-                @enderror
-
-            });
-
-        });
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
 
     <!-- jQuery et Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
@@ -228,4 +179,48 @@
        });  
     </script>
 
+@endsection
+
+@section('scripts')
+    <!-- SweetAlert2 -->
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <!-- Toastr -->
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+    <script>
+        $(function() {
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3500
+            });
+
+            $('.swalDefaultSuccess').ready(function() {
+                @if (session('status'))
+                    Toast.fire({
+                        icon: 'success',
+                        title: '{{ session('status') }}'
+                    })
+                @endif
+            });
+
+            $('.swalDefaultError').ready(function() {
+                @error('nom_fichier')
+                    Toast.fire({
+                        icon: 'error',
+                        title: '{{ $message }}'
+                    })
+                @enderror
+            });
+
+            $('.swalDefaultWarning').ready(function() {
+                @if (session('warning'))
+                    Toast.fire({
+                        icon: 'warning',
+                        title: "{{ session('warning') }}"
+                    })
+                @endif
+            });
+        });
+    </script>
 @endsection

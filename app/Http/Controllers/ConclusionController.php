@@ -109,7 +109,7 @@ class ConclusionController extends Controller
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    Êtes-vous sûr de vouloir supprimer ce audience ?
+                                    Êtes-vous sûr de vouloir supprimer ce document ?
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"

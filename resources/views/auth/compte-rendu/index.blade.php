@@ -143,6 +143,7 @@
         </div>
     </div>
 
+    @yield('scripts')
 
     <!-- DataTables -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -154,6 +155,54 @@
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 
+
+    <!-- jQuery et Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            // $("#dateMask").inputmask("dd/mm/yyyy", {"placeholder": "dd-mm-yyyy"});
+            if ($.fn.DataTable.isDataTable('#liste_compterendu')) {
+                $('#liste_compterendu').DataTable().destroy();
+            }
+            var oTable = $('#liste_compterendu').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{!! route('charger.liste.compterendu') !!}",
+                columns: [{
+                        data: 'numero',
+                        name: 'numero'
+                    },
+                    {
+                        data: 'nomFichier',
+                        name: 'nomFichier',
+                        searchable: true
+                    },
+                    {
+                        data: 'dateAjout',
+                        name: 'dateAjout',
+                        searchable: true
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        searchable: false
+                    }
+                ]
+            });
+
+        });
+    </script>
+
+@endsection
+
+@section('scripts')
+    <!-- SweetAlert2 -->
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <!-- Toastr -->
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
     <script>
         $(function() {
             var Toast = Swal.mixin({
@@ -203,50 +252,6 @@
 
             });
 
-
         });
     </script>
-
-    
-    <!-- jQuery et Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-
-            // $("#dateMask").inputmask("dd/mm/yyyy", {"placeholder": "dd-mm-yyyy"});
-            if ($.fn.DataTable.isDataTable('#liste_compterendu')) {
-                $('#liste_compterendu').DataTable().destroy();
-            }
-            var oTable = $('#liste_compterendu').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: "{!! route('charger.liste.compterendu') !!}",
-                columns: [{
-                        data: 'numero',
-                        name: 'numero'
-                    },
-                    {
-                        data: 'nomFichier',
-                        name: 'nomFichier',
-                        searchable: true
-                    },
-                    {
-                        data: 'dateAjout',
-                        name: 'dateAjout',
-                        searchable: true
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        searchable: false
-                    }
-                ]
-            });
-
-        });
-    </script>
-
 @endsection
