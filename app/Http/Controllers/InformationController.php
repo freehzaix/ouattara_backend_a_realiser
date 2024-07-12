@@ -127,8 +127,16 @@ class InformationController extends Controller
         $information->contenu_message = $request->contenu_message;       
         $information->save();
 
+        $users = User::all();
+
+        foreach ($users as $user) {
+
+            Mail::to($user->email)->send(new UserEmailInformation($information));
+
+        }
+
         //Après avoir enregistrer, faire la rediretion
-        return redirect()->route('information.index')->with('status', 'L\'information a bien été enregistré.');
+        return redirect()->route('information.index')->with('status', 'L\'information a bien été enregistré et envoyé à tous les utilisateurs.');
 
     }
 
