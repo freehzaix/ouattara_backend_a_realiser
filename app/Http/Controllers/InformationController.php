@@ -174,15 +174,13 @@ class InformationController extends Controller
     {
         $users = User::all();
         $information = Information::find($id);
-
-        // dd($information);
-
+        
         foreach ($users as $user) {
-
-            Mail::to($user->email)->send(new UserEmailInformation($information));
-
+            if ($user->email != null) {
+                Mail::to($user->email)->send(new UserEmailInformation($information));
+            }
         }
-
+       
         return redirect()->route('information.index')->with('status', 'Mail envoyé avec success.');
     }
 

@@ -1,3 +1,3 @@
 <div>
-    Contenu du message: {{ $information->contenu_message }}
+    Contenu du message: {{ $data['contenu_message'] }}
 </div>
