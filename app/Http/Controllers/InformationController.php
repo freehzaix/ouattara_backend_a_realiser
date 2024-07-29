@@ -12,7 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class InformationController extends Controller
 {
-    
+
     public function index()
     {
         return view('auth.information.index');
@@ -124,27 +124,24 @@ class InformationController extends Controller
         $request->validated();
 
         $information = new Information();
-        $information->contenu_message = $request->contenu_message;       
+        $information->contenu_message = $request->contenu_message;
         $information->save();
 
         $users = User::all();
 
         foreach ($users as $user) {
-
             Mail::to($user->email)->send(new UserEmailInformation($information));
-
         }
 
         //Après avoir enregistrer, faire la rediretion
         return redirect()->route('information.index')->with('status', 'L\'information a bien été enregistré et envoyé à tous les utilisateurs.');
-
     }
 
     //Delete information
     public function delete($id)
     {
         $information = Information::find($id); //Récupéré l'information
-        $information->delete(); 
+        $information->delete();
         //Après avoir supprimer, faire la rediretion
         return redirect()->route('information.index')->with('status', 'L\'information a bien été supprimé.');
     }
@@ -168,20 +165,17 @@ class InformationController extends Controller
 
         return redirect()->route('information.index')->with('status', 'Information mise à jour avec succès');
     }
-    
+
     //Information Send Email
     public function sendEmailInformation($id)
     {
         $users = User::all();
         $information = Information::find($id);
-        
+
         foreach ($users as $user) {
-            if ($user->email != null) {
-                Mail::to($user->email)->send(new UserEmailInformation($information));
-            }
+            Mail::to($user->email)->send(new UserEmailInformation($information));
         }
-       
+
         return redirect()->route('information.index')->with('status', 'Mail envoyé avec success.');
     }
-
 }
