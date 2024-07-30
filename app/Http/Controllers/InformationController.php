@@ -146,13 +146,13 @@ class InformationController extends Controller
         return redirect()->route('information.index')->with('status', 'L\'information a bien été supprimé.');
     }
 
-    //Affiche une information
-    public function show($id)
-    {
-        $information = Information::find($id); //Récupéré l'information
+    // //Affiche une information
+    // public function show($id)
+    // {
+    //     $information = Information::find($id); //Récupéré l'information
 
-        return view('auth.information.show', compact('information'));
-    }
+    //     return view('auth.information.show', compact('information'));
+    // }
 
     //Modifier une information
     public function update(InformationRequest $request, $id)
